@@ -20,10 +20,10 @@ from database import (
 )
 from importer import parse_attendance_file, get_sample_attendance_text
 
-COLOR_DARK_TEAL = "#003830"
+COLOR_DARK_TEAL = "#2e7d32"
 COLOR_GOLD = "#e58e12"
-COLOR_GREEN = "#2e7d32"
-SEMILLERO_PALETTE = ['#003830', '#e58e12', '#2e7d32', '#65a30d', '#0284c7', '#78716c']
+COLOR_GREEN = "#388e3c"
+SEMILLERO_PALETTE = ['#2e7d32', '#e58e12', '#388e3c', '#d97706', '#65a30d', '#0284c7']
 
 def render_admin_login():
     """Formulario de acceso seguro al panel administrativo."""

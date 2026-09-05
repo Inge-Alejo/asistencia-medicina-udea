@@ -6,9 +6,9 @@ from datetime import datetime
 from database import search_students_by_query, get_student_by_id, get_student_attendance
 
 # Paleta Semillero Medicina UdeA
-COLOR_DARK_TEAL = "#003830"
+COLOR_DARK_TEAL = "#2e7d32"
 COLOR_GOLD = "#e58e12"
-COLOR_GREEN = "#2e7d32"
+COLOR_GREEN = "#388e3c"
 
 def render_student_view():
     # Banner Semillero Medicina UdeA - Nivel 1 (Exactamente como en la imagen)

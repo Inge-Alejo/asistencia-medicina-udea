@@ -25,12 +25,12 @@ apply_custom_styles()
 # -------------------------------------------------------------
 with st.sidebar:
     st.markdown("""
-    <div style="text-align: center; padding: 0.8rem 0 1rem 0;">
-        <div style="font-size: 2.6rem; margin-bottom: 0.2rem;">🩺</div>
-        <div style="font-size: 0.72rem; font-weight: 800; color: #a7f3d0; text-transform: uppercase; letter-spacing: 0.08em;">
+    <div style="text-align: center; padding: 0.6rem 0 1rem 0;">
+        <div style="font-size: 2.8rem; margin-bottom: 0.2rem;">🩺</div>
+        <div style="font-size: 0.74rem; font-weight: 800; color: #2e7d32; text-transform: uppercase; letter-spacing: 0.08em;">
             Universidad de Antioquia
         </div>
-        <h3 style="color: #ffffff; margin: 0.2rem 0 0 0; font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.35rem;">
+        <h3 style="color: #1f2937; margin: 0.2rem 0 0 0; font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.35rem;">
             Semillero Medicina
         </h3>
         <p style="color: #e58e12; font-size: 0.85rem; font-weight: 700; margin-top: 0.2rem;">
@@ -76,7 +76,7 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("""
-    <div style="font-size: 0.76rem; color: #cbd5e1; text-align: center; line-height: 1.4; padding-top: 0.5rem;">
+    <div style="font-size: 0.78rem; color: #4b5563; text-align: center; line-height: 1.4; padding-top: 0.5rem;">
         <b>Facultad de Medicina • UdeA</b><br>
         Medellín, Colombia<br>
         Control Biométrico de Asistencia

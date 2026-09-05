@@ -13,10 +13,36 @@ def apply_custom_styles():
         background: transparent;
     }
 
-    /* Fondo general: Limpio con sutil tono marfil/clínico y soporte de alto contraste */
+    /* Fondo general: Blanco marfil luminoso y limpio */
     .stApp {
         background: #f8faf9;
-        color: #1c1917;
+        color: #1f2937;
+    }
+
+    /* ============================================================= */
+    /* BARRA LATERAL (SIDEBAR) - ESTILO CLARO Y LUMINOSO             */
+    /* ============================================================= */
+    [data-testid="stSidebar"] {
+        background: #f2f7f4 !important;
+        border-right: 1px solid #dce8e0 !important;
+        color: #1f2937 !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
+        color: #1f2937 !important;
+    }
+
+    [data-testid="stSidebar"] .stRadio label {
+        color: #1f2937 !important;
+        font-weight: 600 !important;
+    }
+
+    [data-testid="stSidebar"] hr {
+        border-color: #dce8e0 !important;
+    }
+
+    [data-testid="stSidebar"] .stCaption {
+        color: #4b5563 !important;
     }
 
     /* ============================================================= */
@@ -25,14 +51,14 @@ def apply_custom_styles():
     .semillero-banner {
         background-color: #ffffff;
         background-image: 
-            linear-gradient(to right, rgba(0, 56, 48, 0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(0, 56, 48, 0.05) 1px, transparent 1px);
-        background-size: 24px 24px;
-        border: 1px solid #e7e5e4;
+            linear-gradient(to right, rgba(46, 125, 50, 0.06) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(46, 125, 50, 0.06) 1px, transparent 1px);
+        background-size: 22px 22px;
+        border: 1.5px solid #dce8e0;
         border-radius: 20px;
         padding: 2.2rem 2.5rem;
         margin-bottom: 1.8rem;
-        box-shadow: 0 10px 25px -5px rgba(0, 56, 48, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 8px 24px -4px rgba(46, 125, 50, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
         position: relative;
         overflow: hidden;
     }
@@ -56,7 +82,7 @@ def apply_custom_styles():
         display: inline-flex;
         align-items: center;
         gap: 7px;
-        background-color: #003830;
+        background-color: #004d40;
         color: #ffffff;
         font-size: 0.8rem;
         font-weight: 700;
@@ -89,13 +115,11 @@ def apply_custom_styles():
         color: #d97706;
         line-height: 1;
         letter-spacing: -0.02em;
-        position: relative;
         display: inline-block;
     }
 
-    /* Puntos sobre la 'e' de Medicina como en la imagen */
     .semillero-sub-label {
-        font-size: 1.5rem;
+        font-size: 1.55rem;
         font-weight: 800;
         color: #558b2f;
         letter-spacing: -0.01em;
@@ -106,21 +130,21 @@ def apply_custom_styles():
 
     .semillero-tagline {
         color: #2e7d32;
-        font-size: 1.15rem;
+        font-size: 1.18rem;
         font-weight: 700;
         margin-top: 0.4rem;
         letter-spacing: 0.01em;
     }
 
-    /* Pill Nivel 1 en el banner derecho */
+    /* Pill Nivel 1 en el banner */
     .pill-nivel {
-        background-color: #003830;
+        background-color: #004d40;
         border-radius: 9999px;
         padding: 0.65rem 1.4rem;
         display: inline-flex;
         align-items: center;
         gap: 14px;
-        box-shadow: 0 4px 14px rgba(0, 56, 48, 0.2);
+        box-shadow: 0 4px 14px rgba(0, 77, 64, 0.2);
     }
 
     .pill-nivel-text {
@@ -145,7 +169,9 @@ def apply_custom_styles():
         box-shadow: 0 2px 8px rgba(229, 142, 18, 0.4);
     }
 
-    /* Badges de filtros y categorías de la imagen */
+    /* ============================================================= */
+    /* BOTONES PÍLDORA VERDES (COMO EN LA IMAGEN)                    */
+    /* ============================================================= */
     .pill-btn-group {
         display: flex;
         gap: 10px;
@@ -154,16 +180,17 @@ def apply_custom_styles():
     }
 
     .pill-dark-teal {
-        background-color: #003830;
-        color: #ffffff;
+        background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
+        color: #ffffff !important;
         font-size: 0.85rem;
         font-weight: 700;
-        padding: 0.45rem 1.1rem;
+        padding: 0.45rem 1.15rem;
         border-radius: 9999px;
         display: inline-flex;
         align-items: center;
         gap: 7px;
-        box-shadow: 0 2px 6px rgba(0, 56, 48, 0.15);
+        box-shadow: 0 2px 8px rgba(46, 125, 50, 0.25);
+        border: none;
     }
 
     /* ============================================================= */
@@ -171,24 +198,24 @@ def apply_custom_styles():
     /* ============================================================= */
     .glass-card {
         background: #ffffff;
-        border: 1px solid #e7e5e4;
+        border: 1px solid #dce8e0;
         border-radius: 16px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 20px -2px rgba(0, 56, 48, 0.05);
-        color: #1c1917;
+        padding: 1.6rem;
+        box-shadow: 0 4px 18px -2px rgba(46, 125, 50, 0.05);
+        color: #1f2937;
     }
 
     .kpi-card {
         background: #ffffff;
-        border: 1px solid #e7e5e4;
-        border-top: 4px solid #003830;
+        border: 1px solid #dce8e0;
+        border-top: 4px solid #2e7d32;
         border-radius: 14px;
         padding: 1.25rem 1.3rem;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
     }
 
     .kpi-label {
-        color: #57534e;
+        color: #4b5563;
         font-size: 0.82rem;
         font-weight: 700;
         text-transform: uppercase;
@@ -199,13 +226,13 @@ def apply_custom_styles():
     .kpi-value {
         font-size: 2.1rem;
         font-weight: 800;
-        color: #003830;
+        color: #2e7d32;
         line-height: 1.1;
     }
 
     .kpi-subtext {
         font-size: 0.82rem;
-        color: #78716c;
+        color: #6b7280;
         margin-top: 0.35rem;
     }
 
@@ -215,8 +242,8 @@ def apply_custom_styles():
         align-items: center;
         gap: 6px;
         background: #ecfdf5;
-        color: #047857;
-        border: 1px solid #a7f3d0;
+        color: #15803d;
+        border: 1px solid #86efac;
         padding: 0.4rem 0.95rem;
         border-radius: 9999px;
         font-size: 0.88rem;
@@ -239,11 +266,11 @@ def apply_custom_styles():
     /* Tarjeta Perfil de Estudiante */
     .student-profile-card {
         background: #ffffff;
-        border: 1px solid #e7e5e4;
+        border: 1px solid #dce8e0;
         border-left: 6px solid #e58e12;
         border-radius: 16px;
         padding: 1.8rem;
-        box-shadow: 0 8px 24px -4px rgba(0, 56, 48, 0.06);
+        box-shadow: 0 8px 24px -4px rgba(46, 125, 50, 0.07);
         margin-bottom: 1.8rem;
     }
 
@@ -251,32 +278,32 @@ def apply_custom_styles():
         width: 64px;
         height: 64px;
         border-radius: 16px;
-        background: linear-gradient(135deg, #003830 0%, #2e7d32 100%);
+        background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.7rem;
         color: #ffffff;
         font-weight: 800;
-        box-shadow: 0 4px 12px rgba(0, 56, 48, 0.25);
+        box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
     }
 
     /* Formulario e inputs */
     .stTextInput>div>div>input {
         background-color: #ffffff !important;
-        border: 1.5px solid #d6d3d1 !important;
-        color: #1c1917 !important;
+        border: 1.5px solid #cbd5e1 !important;
+        color: #1f2937 !important;
         border-radius: 10px !important;
         padding: 0.7rem 1rem !important;
         font-size: 1rem !important;
     }
 
     .stTextInput>div>div>input:focus {
-        border-color: #003830 !important;
-        box-shadow: 0 0 0 3px rgba(0, 56, 48, 0.15) !important;
+        border-color: #2e7d32 !important;
+        box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15) !important;
     }
 
-    /* Botones principales: Dark Teal con hover verde/dorado */
+    /* Botones primarios en verde UdeA / Semillero */
     .stButton>button {
         border-radius: 10px !important;
         font-weight: 700 !important;
@@ -285,30 +312,30 @@ def apply_custom_styles():
     }
 
     .stButton>button[kind="primary"] {
-        background: #003830 !important;
+        background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%) !important;
         color: #ffffff !important;
         border: none !important;
-        box-shadow: 0 3px 10px rgba(0, 56, 48, 0.25) !important;
+        box-shadow: 0 3px 10px rgba(46, 125, 50, 0.25) !important;
     }
 
     .stButton>button[kind="primary"]:hover {
-        background: #2e7d32 !important;
-        box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3) !important;
+        background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%) !important;
+        box-shadow: 0 5px 15px rgba(27, 94, 32, 0.3) !important;
         transform: translateY(-1px) !important;
     }
 
-    /* Pestañas (Tabs) estilo imagen */
+    /* Pestañas (Tabs) */
     .stTabs [data-baseweb="tab-list"] {
         gap: 6px;
-        background-color: #f5f5f4;
+        background-color: #f0f5f2;
         padding: 5px;
         border-radius: 12px;
-        border: 1px solid #e7e5e4;
+        border: 1px solid #dce8e0;
     }
 
     .stTabs [data-baseweb="tab"] {
         border-radius: 8px;
-        color: #57534e;
+        color: #4b5563;
         font-weight: 700;
         padding: 8px 16px;
     }
@@ -319,30 +346,16 @@ def apply_custom_styles():
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     }
 
-    /* Sidebar personalizado */
-    [data-testid="stSidebar"] {
-        background-color: #002924;
-        color: #f5f5f4;
-    }
-
-    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
-        color: #f5f5f4;
-    }
-
-    [data-testid="stSidebar"] hr {
-        border-color: rgba(255, 255, 255, 0.12);
-    }
-
     /* Tablas Dataframe */
     [data-testid="stDataFrame"] {
-        border: 1px solid #e7e5e4 !important;
+        border: 1px solid #dce8e0 !important;
         border-radius: 12px !important;
         background-color: #ffffff !important;
     }
 
     .divider-custom {
         height: 1px;
-        background: #e7e5e4;
+        background: #dce8e0;
         margin: 1.5rem 0;
     }
     </style>
