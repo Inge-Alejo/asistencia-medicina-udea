@@ -399,5 +399,181 @@ def apply_custom_styles():
         background: #dce8e0;
         margin: 1.5rem 0;
     }
+
+    /* ============================================================= */
+    /* SEMÁFORO Y PROGRESO DE CERTIFICACIÓN ACADÉMICA                */
+    /* ============================================================= */
+    .cert-progress-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 1.3rem 1.6rem;
+        border: 1.5px solid #dce8e0;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        margin: 1.2rem 0;
+    }
+
+    .cert-header-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .cert-title {
+        font-weight: 800;
+        color: #1b4332;
+        font-size: 1.12rem;
+        margin-bottom: 0.2rem;
+    }
+
+    .cert-subtitle {
+        font-size: 0.84rem;
+        color: #6b7280;
+    }
+
+    .cert-pct-badge {
+        font-weight: 800;
+        font-size: 1.4rem;
+        padding: 0.25rem 0.8rem;
+        border-radius: 10px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .cert-bar-track {
+        width: 100%;
+        background-color: #e5e7eb;
+        height: 12px;
+        border-radius: 999px;
+        overflow: hidden;
+        margin: 0.6rem 0;
+    }
+
+    .cert-bar-fill {
+        height: 100%;
+        border-radius: 999px;
+        transition: width 0.6s ease;
+    }
+
+    .cert-footer-flex {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        font-size: 0.86rem;
+        margin-top: 0.5rem;
+    }
+
+    /* ============================================================= */
+    /* MINI-CALENDARIO DE ASISTENCIAS MENSUAL                        */
+    /* ============================================================= */
+    .cal-card {
+        background: #ffffff;
+        border: 1.5px solid #dce8e0;
+        border-radius: 16px;
+        padding: 1.4rem 1.5rem;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+        margin-bottom: 1.5rem;
+    }
+
+    .cal-month-title {
+        font-weight: 800;
+        color: #2e7d32;
+        font-size: 1.15rem;
+        margin-bottom: 1rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .cal-grid-header {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+        margin-bottom: 8px;
+        text-align: center;
+    }
+
+    .cal-header-cell {
+        font-size: 0.78rem;
+        font-weight: 800;
+        color: #4b5563;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 4px 0;
+    }
+
+    .cal-grid-days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+    }
+
+    .cal-day-cell {
+        min-height: 48px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        font-weight: 700;
+        transition: all 0.2s ease;
+        position: relative;
+        background: #f9fafb;
+        color: #374151;
+        border: 1px solid #f3f4f6;
+    }
+
+    .cal-day-cell.empty {
+        background: transparent;
+        border-color: transparent;
+    }
+
+    .cal-day-cell.attended {
+        background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%) !important;
+        color: #ffffff !important;
+        border: 1px solid #1b5e20 !important;
+        box-shadow: 0 2px 6px rgba(46, 125, 50, 0.25);
+    }
+
+    .cal-day-cell.today {
+        border: 2px solid #e58e12 !important;
+    }
+
+    .cal-check-badge {
+        font-size: 0.65rem;
+        line-height: 1;
+        margin-top: 2px;
+        opacity: 0.95;
+    }
+
+    .cal-legend {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+        font-size: 0.8rem;
+        color: #4b5563;
+    }
+
+    .cal-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .cal-legend-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+    }
     </style>
     """, unsafe_allow_html=True)
+

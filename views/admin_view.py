@@ -16,7 +16,8 @@ from database import (
     save_logs_batch,
     get_admin_password,
     get_setting,
-    set_setting
+    set_setting,
+    get_spanish_day_name
 )
 from importer import parse_attendance_file, get_sample_attendance_text
 
@@ -313,6 +314,8 @@ def render_admin_view():
         st.markdown(f"**Total de marcaciones encontradas:** `{len(master_df)}`")
         
         display_master = master_df.drop(columns=['Timestamp'], errors='ignore')
+        if not display_master.empty and 'Fecha' in display_master.columns:
+            display_master.insert(0, 'Día', display_master['Fecha'].apply(get_spanish_day_name))
         st.dataframe(display_master, use_container_width=True, hide_index=True)
 
         col_exp1, col_exp2 = st.columns(2)

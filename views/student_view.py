@@ -2,13 +2,148 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
+import calendar
 from datetime import datetime
-from database import search_students_by_query, get_student_by_id, get_student_attendance, mask_name
+from database import (
+    search_students_by_query,
+    get_student_by_id,
+    get_student_attendance,
+    mask_name,
+    get_spanish_day_name,
+    get_spanish_date_formatted,
+    get_total_sessions_count
+)
 
 # Paleta Semillero Medicina UdeA
 COLOR_SEMILLERO_GREEN = "#558b2f"
 COLOR_GOLD = "#e58e12"
 COLOR_DEEP_GREEN = "#2e7d32"
+
+def render_mini_calendar(logs_df: pd.DataFrame):
+    """Renderiza el mini-calendario mensual con los días asistidos resaltados."""
+    if logs_df.empty:
+        st.info("No hay fechas de asistencia registradas para mostrar en el calendario.")
+        return
+        
+    now = datetime.now()
+    # Meses presentes en el historial del estudiante
+    meses_disponibles = sorted(logs_df['date'].str.slice(0, 7).unique(), reverse=True)
+    if not meses_disponibles:
+        meses_disponibles = [now.strftime("%Y-%m")]
+        
+    spanish_months_map = {
+        "01": "Enero", "02": "Febrero", "03": "Marzo", "04": "Abril",
+        "05": "Mayo", "06": "Junio", "07": "Julio", "08": "Agosto",
+        "09": "Septiembre", "10": "Octubre", "11": "Noviembre", "12": "Diciembre"
+    }
+    
+    def format_month_label(m_str):
+        try:
+            y, m = m_str.split('-')
+            return f"{spanish_months_map.get(m, m)} {y}"
+        except Exception:
+            return m_str
+            
+    col_sel, col_stats = st.columns([2, 3])
+    with col_sel:
+        selected_month = st.selectbox(
+            "Mes en el Calendario",
+            options=meses_disponibles,
+            format_func=format_month_label,
+            key="cal_selected_month"
+        )
+        
+    df_mes = logs_df[logs_df['date'].str.startswith(selected_month)]
+    attended_days_dict = {}
+    for _, row in df_mes.iterrows():
+        try:
+            day_int = int(row['date'].split('-')[2])
+            if day_int not in attended_days_dict:
+                attended_days_dict[day_int] = []
+            attended_days_dict[day_int].append(row['time'])
+        except Exception:
+            pass
+            
+    year_sel, month_sel = map(int, selected_month.split('-'))
+    first_weekday, num_days = calendar.monthrange(year_sel, month_sel)
+    
+    with col_stats:
+        dias_asistidos_mes = len(attended_days_dict)
+        st.markdown(f"""
+        <div style="padding-top: 1.8rem; font-size: 0.92rem; color: #4b5563;">
+            Total días asistidos en <b>{format_month_label(selected_month)}</b>: 
+            <span style="font-weight: 800; color: #2e7d32; font-size: 1.15rem;">{dias_asistidos_mes}</span>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    days_headers = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
+    header_cells_html = "".join([f'<div class="cal-header-cell">{h}</div>' for h in days_headers])
+    
+    today_dt = now.date()
+    grid_cells_html = []
+    
+    # Celdas vacías previas al día 1
+    for _ in range(first_weekday):
+        grid_cells_html.append('<div class="cal-day-cell empty"></div>')
+        
+    for day in range(1, num_days + 1):
+        cell_date = datetime(year_sel, month_sel, day).date()
+        is_today = (cell_date == today_dt)
+        is_attended = (day in attended_days_dict)
+        
+        classes = ["cal-day-cell"]
+        if is_attended:
+            classes.append("attended")
+        if is_today:
+            classes.append("today")
+            
+        badge_html = ""
+        dia_semana_nombre = get_spanish_day_name(f"{year_sel:04d}-{month_sel:02d}-{day:02d}")
+        title_attr = f"{dia_semana_nombre} {day} de {spanish_months_map.get(f'{month_sel:02d}', '')}"
+        
+        if is_attended:
+            horas_str = ", ".join(attended_days_dict[day])
+            badge_html = '<span class="cal-check-badge">✓ Asistió</span>'
+            title_attr += f" • Hora: {horas_str}"
+        elif is_today:
+            badge_html = '<span class="cal-check-badge" style="color: #e58e12;">Hoy</span>'
+            
+        grid_cells_html.append(f"""
+        <div class="{' '.join(classes)}" title="{title_attr}">
+            <span>{day}</span>
+            {badge_html}
+        </div>
+        """)
+        
+    month_title = f"{spanish_months_map.get(f'{month_sel:02d}', '')} {year_sel}"
+    calendar_html = f"""
+    <div class="cal-card">
+        <div class="cal-month-title">
+            <span>📅 {month_title}</span>
+        </div>
+        <div class="cal-grid-header">
+            {header_cells_html}
+        </div>
+        <div class="cal-grid-days">
+            {''.join(grid_cells_html)}
+        </div>
+        <div class="cal-legend">
+            <div class="cal-legend-item">
+                <div class="cal-legend-dot" style="background: #2e7d32;"></div>
+                <span>Día asistido (✓)</span>
+            </div>
+            <div class="cal-legend-item">
+                <div class="cal-legend-dot" style="background: #f9fafb; border: 1px solid #d1d5db;"></div>
+                <span>Sin registro</span>
+            </div>
+            <div class="cal-legend-item">
+                <div class="cal-legend-dot" style="background: #ffffff; border: 2px solid #e58e12;"></div>
+                <span>Fecha de hoy</span>
+            </div>
+        </div>
+    </div>
+    """
+    st.markdown(calendar_html, unsafe_allow_html=True)
 
 def render_student_view():
     # Banner Semillero Medicina UdeA (Centrado y elegante)
@@ -84,20 +219,21 @@ def render_student_view():
     # Obtener marcaciones
     logs_df = get_student_attendance(selected_student_id)
     
-    # Calcular estado del día de hoy
+    # Calcular estado del día de hoy con identificación del día
     today_str = datetime.now().strftime("%Y-%m-%d")
+    today_day_name = get_spanish_day_name(today_str)
     today_records = logs_df[logs_df['date'] == today_str] if not logs_df.empty else pd.DataFrame()
     attended_today = not today_records.empty
     
     # Generar iniciales para avatar
     initials = "".join([part[0].upper() for part in student['name'].split()[:2]]) or "MD"
     
-    # Renderizar tarjeta de perfil
+    # Renderizar tarjeta de perfil con día de la semana
     if attended_today:
         hora_marcacion = today_records.iloc[0]['time']
-        status_html = f'<div class="badge-success">Presente hoy ({hora_marcacion})</div>'
+        status_html = f'<div class="badge-success">Presente hoy ({today_day_name} • {hora_marcacion})</div>'
     else:
-        status_html = '<div class="badge-warning">Sin registro hoy</div>'
+        status_html = f'<div class="badge-warning">Sin registro hoy ({today_day_name})</div>'
         
     st.markdown(f"""
     <div class="student-profile-card">
@@ -120,13 +256,58 @@ def render_student_view():
     </div>
     """, unsafe_allow_html=True)
     
-    # Cálculos para el MES COMPLETO
+    # -------------------------------------------------------------
+    # 1. SEMÁFORO Y PROGRESO DE CERTIFICACIÓN ACADÉMICA (OPCIÓN 1)
+    # -------------------------------------------------------------
+    dias_asistidos_global = logs_df['date'].nunique() if not logs_df.empty else 0
+    total_sesiones_programadas = max(get_total_sessions_count(student.get('department')), dias_asistidos_global, 1)
+    pct_asistencia = min(round((dias_asistidos_global / total_sesiones_programadas) * 100, 1), 100.0)
+    
+    if pct_asistencia >= 80.0:
+        color_cert = "#2e7d32"
+        badge_bg = "#e8f5e9"
+        badge_text = "🟢 Al Día — Requisito Cumplido"
+        msg_cert = "¡Excelente compromiso! Cumples con el 80% mínimo de asistencia reglamentaria para la certificación del semillero."
+    elif pct_asistencia >= 70.0:
+        color_cert = "#d97706"
+        badge_bg = "#fef3c7"
+        badge_text = "🟡 En Observación — Cerca del Límite"
+        msg_cert = "Atención: Tu porcentaje de asistencia está cerca del mínimo exigido (80%). Procura asistir puntualmente a las próximas jornadas."
+    else:
+        color_cert = "#dc2626"
+        badge_bg = "#fee2e2"
+        badge_text = "🔴 En Riesgo de Inasistencia"
+        msg_cert = "Alerta: Tu asistencia actual está por debajo del 80% mínimo reglamentario. Consulta tu situación con la coordinación del Semillero."
+        
+    st.markdown(f"""
+    <div class="cert-progress-card">
+        <div class="cert-header-flex">
+            <div>
+                <div class="cert-title">Cumplimiento y Avance de Certificación</div>
+                <div class="cert-subtitle">Requisito reglamentario: Mínimo 80% de asistencia a las jornadas presenciales</div>
+            </div>
+            <div class="cert-pct-badge" style="background-color: {badge_bg}; color: {color_cert};">
+                {pct_asistencia}%
+            </div>
+        </div>
+        <div class="cert-bar-track">
+            <div class="cert-bar-fill" style="width: {pct_asistencia}%; background-color: {color_cert};"></div>
+        </div>
+        <div class="cert-footer-flex">
+            <span style="font-weight: 800; color: {color_cert};">{badge_text}</span>
+            <span style="color: #4b5563;"><b>{dias_asistidos_global}</b> de <b>{total_sesiones_programadas}</b> jornadas registradas</span>
+        </div>
+        <div style="font-size: 0.83rem; color: #6b7280; margin-top: 0.45rem; line-height: 1.4;">
+            {msg_cert}
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Métricas numéricas del mes
     now = datetime.now()
     mes_actual_str = now.strftime("%Y-%m")
     
-    total_asistencias = len(logs_df)
     dias_totales = logs_df['date'].nunique() if not logs_df.empty else 0
-    
     dias_este_mes = 0
     marcaciones_este_mes = 0
     if not logs_df.empty:
@@ -134,7 +315,6 @@ def render_student_view():
         dias_este_mes = df_mes['date'].nunique()
         marcaciones_este_mes = len(df_mes)
     
-    # Horario promedio de llegada
     hora_promedio = "N/A"
     if not logs_df.empty:
         try:
@@ -184,22 +364,33 @@ def render_student_view():
         st.warning("No hay registros de asistencia disponibles para este estudiante.")
         return
         
-    # Pestañas limpias sin emojis excesivos
-    tab_graficos, tab_tabla = st.tabs(["Gráficos de Asistencia", "Historial Completo de Marcaciones"])
+    # Pestañas principales
+    tab_graficos, tab_tabla = st.tabs(["Calendario y Gráficos de Asistencia", "Historial Completo de Marcaciones"])
     
     with tab_graficos:
-        c_chart1, c_chart2 = st.columns(2)
+        # -------------------------------------------------------------
+        # 3. MINI-CALENDARIO VISUAL DE ASISTENCIAS (OPCIÓN 3)
+        # -------------------------------------------------------------
+        st.markdown("<h4 style='color: #2e7d32; font-weight: 800; margin-bottom: 0.8rem;'>Calendario Mensual de Asistencia</h4>", unsafe_allow_html=True)
+        render_mini_calendar(logs_df)
         
+        st.markdown('<div class="divider-custom"></div>', unsafe_allow_html=True)
+        st.markdown("<h4 style='color: #2e7d32; font-weight: 800; margin-bottom: 0.8rem;'>Métricas y Distribución Horaria</h4>", unsafe_allow_html=True)
+        
+        c_chart1, c_chart2 = st.columns(2)
         with c_chart1:
             daily_counts = logs_df.groupby('date').size().reset_index(name='Marcaciones')
             daily_counts = daily_counts.sort_values(by='date')
+            daily_counts['dia_nombre'] = daily_counts['date'].apply(get_spanish_day_name)
+            daily_counts['etiqueta'] = daily_counts.apply(lambda r: f"{r['dia_nombre']} {r['date'].split('-')[2]}", axis=1)
+            daily_counts['fecha_completa'] = daily_counts['date'].apply(get_spanish_date_formatted)
             
             fig1 = px.bar(
                 daily_counts, 
-                x='date', 
+                x='etiqueta', 
                 y='Marcaciones',
-                title="Historial de Asistencias por Fecha",
-                labels={'date': 'Fecha', 'Marcaciones': 'Marcaciones'},
+                title="Historial de Asistencias por Jornada",
+                labels={'etiqueta': 'Día de Jornada', 'Marcaciones': 'Marcaciones'},
                 color_discrete_sequence=[COLOR_SEMILLERO_GREEN]
             )
             fig1.update_layout(
@@ -214,15 +405,18 @@ def render_student_view():
             st.plotly_chart(fig1, use_container_width=True)
             
         with c_chart2:
-            logs_df['minuto_dia'] = logs_df['time'].apply(lambda t: int(t.split(':')[0]) + int(t.split(':')[1])/60.0)
+            logs_df_plot = logs_df.copy()
+            logs_df_plot['minuto_dia'] = logs_df_plot['time'].apply(lambda t: int(t.split(':')[0]) + int(t.split(':')[1])/60.0)
+            logs_df_plot['dia_nombre'] = logs_df_plot['date'].apply(get_spanish_day_name)
+            
             fig2 = px.scatter(
-                logs_df,
+                logs_df_plot,
                 x='date',
                 y='minuto_dia',
                 title="Hora Exacta de Entrada por Fecha",
                 labels={'date': 'Fecha', 'minuto_dia': 'Hora'},
                 color_discrete_sequence=[COLOR_GOLD],
-                size=[14]*len(logs_df)
+                size=[14]*len(logs_df_plot)
             )
             fig2.update_layout(
                 plot_bgcolor="#ffffff",
@@ -242,18 +436,23 @@ def render_student_view():
             st.plotly_chart(fig2, use_container_width=True)
             
     with tab_tabla:
+        # Tabla con columna 'Día' en español (¿según la fecha cuál día es?)
         display_df = logs_df[['date', 'time', 'device_id']].copy()
-        display_df.columns = ['Fecha', 'Hora de Entrada', 'Dispositivo']
+        display_df['Día'] = display_df['date'].apply(get_spanish_day_name)
+        display_df['Fecha'] = display_df['date']
+        display_df['Hora de Entrada'] = display_df['time']
+        display_df['Dispositivo'] = display_df['device_id']
         
+        display_table = display_df[['Día', 'Fecha', 'Hora de Entrada', 'Dispositivo']]
         st.dataframe(
-            display_df,
+            display_table,
             use_container_width=True,
             hide_index=True
         )
         
-        csv_data = display_df.to_csv(index=False).encode('utf-8')
+        csv_data = display_table.to_csv(index=False).encode('utf-8')
         st.download_button(
-            label="Descargar Reporte (CSV)",
+            label="Descargar Reporte de Asistencia (CSV)",
             data=csv_data,
             file_name=f"asistencia_semillero_medicina_{student['student_id']}_{datetime.now().strftime('%Y%m%d')}.csv",
             mime="text/csv"

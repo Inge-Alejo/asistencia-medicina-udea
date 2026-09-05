@@ -422,3 +422,68 @@ def mask_name(name: str) -> str:
             
     return " ".join(masked_words)
 
+SPANISH_DAYS = {
+    0: "Lunes",
+    1: "Martes",
+    2: "Miércoles",
+    3: "Jueves",
+    4: "Viernes",
+    5: "Sábado",
+    6: "Domingo"
+}
+
+SPANISH_MONTHS = {
+    1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril",
+    5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto",
+    9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre"
+}
+
+def get_spanish_day_name(date_val) -> str:
+    """Devuelve el nombre del día de la semana en español según la fecha (ej. 'Sábado', 'Miércoles')."""
+    try:
+        if isinstance(date_val, str):
+            dt = datetime.strptime(date_val.split()[0], "%Y-%m-%d")
+        elif isinstance(date_val, datetime):
+            dt = date_val
+        else:
+            return ""
+        return SPANISH_DAYS.get(dt.weekday(), "")
+    except Exception:
+        return ""
+
+def get_spanish_date_formatted(date_val) -> str:
+    """Formatea la fecha completa en español: ej. 'Sábado, 5 de Septiembre de 2026'."""
+    try:
+        if isinstance(date_val, str):
+            dt = datetime.strptime(date_val.split()[0], "%Y-%m-%d")
+        elif isinstance(date_val, datetime):
+            dt = date_val
+        else:
+            return str(date_val)
+        day_name = SPANISH_DAYS.get(dt.weekday(), "")
+        month_name = SPANISH_MONTHS.get(dt.month, "")
+        return f"{day_name}, {dt.day} de {month_name} de {dt.year}"
+    except Exception:
+        return str(date_val)
+
+def get_total_sessions_count(department: str = None) -> int:
+    """Calcula el total de jornadas únicas celebradas en el Semillero o módulo."""
+    conn = get_connection()
+    cursor = conn.cursor()
+    if department and department != "Sin Asignar":
+        cursor.execute("""
+            SELECT COUNT(DISTINCT l.date) 
+            FROM attendance_logs l 
+            JOIN students s ON l.student_id = s.student_id 
+            WHERE s.department = ?
+        """, (department,))
+        res = cursor.fetchone()[0]
+        if res and res > 0:
+            conn.close()
+            return res
+            
+    cursor.execute("SELECT COUNT(DISTINCT date) FROM attendance_logs")
+    res = cursor.fetchone()[0]
+    conn.close()
+    return max(res, 1) if res else 1
+
