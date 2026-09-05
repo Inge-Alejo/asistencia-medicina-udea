@@ -1,66 +1,67 @@
-# 🎓 Sistema de Control de Asistencia Estudiantil en Tiempo Real
+# 🩺 Sistema de Control de Asistencia - Facultad de Medicina UdeA
 
-Dashboard interactivo desarrollado en **Streamlit** para la gestión, análisis y consulta confidencial de asistencia de estudiantes a partir de las exportaciones de relojes biométricos o dispositivos de control de acceso.
-
----
-
-## 🌟 Características Principales
-
-### 1. 🔍 Portal de Consulta Individual para Estudiantes (Público)
-- **Privacidad Total**: No expone la lista general de estudiantes ni datos confidenciales a otros alumnos.
-- **Búsqueda Instantánea**: Consulta por **Nombre** (ej. *Alejo Pb*) o **ID / Matrícula** (ej. *264*).
-- **Ficha Personal del Estudiante**:
-  - Avatar dinámico, nombre, ID y departamento.
-  - Indicador de estado del día: 🟢 *Presente hoy* o 🟡 *Sin registro hoy*.
-  - KPIs personales: Total marcaciones, días asistidos, hora promedio habitual de llegada.
-- **Gráficos Interactivos con Plotly**: Historial de marcaciones por fecha y dispersión de horarios de entrada.
-- **Historial Completo**: Tabla detallada con opción de descargar comprobante/reporte individual en CSV.
-
-### 2. 🔐 Panel Administrativo Completo
-- **Acceso Protegido**: Clave de administrador (`admin123` por defecto, configurable en la pestaña de ajustes).
-- **Carga Semanal de Archivos**:
-  - Compatible con archivos `.txt`, `.tsv`, `.csv`, `.dat` y `.xlsx` exportados por el reloj biométrico.
-  - Motor inteligente de limpieza que normaliza columnas (`ID.`, `Nombre`, `Depart.`, `Tiempo`, `ID del dispositivo`).
-  - Previsualización en tiempo real antes de guardar.
-  - **Sin sobreescritura ni duplicados**: Utiliza restricciones únicas en SQLite para que subir archivos solapados de varias semanas no duplique registros.
-  - Auditoría de lotes importados con fecha, nombre de archivo y opción de reversión.
-- **Dashboard Global con Analítica Ejecutiva**:
-  - Métricas acumuladas: Total de estudiantes, asistencias totales, asistieron hoy, última fecha registrada.
-  - Horas pico de llegada (distribución por hora).
-  - Porcentaje y distribución por departamento / carrera / grado.
-  - Tendencia diaria de afluencia de alumnos únicos.
-- **Explorador Maestro con Filtros Avanzados**:
-  - Visualización completa de **absolutamente todos los involucrados**.
-  - Filtros en vivo por rango de fechas (Desde - Hasta), departamento y buscador por texto.
-  - Exportación directa a **Excel (.xlsx)** y **CSV**.
-- **Directorio de Estudiantes y Configuración**:
-  - Directorio maestro con totales de asistencia y última marcación registrada.
-  - Cambio de clave de administrador y nombre de la institución.
+Dashboard interactivo en tiempo real desarrollado en **Streamlit** para el registro, seguimiento y analítica de asistencia de estudiantes y rotaciones clínicas de la **Facultad de Medicina de la Universidad de Antioquia (Medellín, Colombia)** a partir de reportes biométricos.
 
 ---
 
-## 🚀 Cómo Iniciar la Aplicación
+## 🏛️ Identidad y Características
 
-Para ejecutar la aplicación localmente en tu máquina:
+- **Paleta Institucional UdeA**: Diseñado con el verde oficial de la Universidad de Antioquia (`#006837`), tonos esmeralda profundos y detalles dorados.
+- **Enfoque de Balance Mensual**:
+  - Métricas centradas en el **mes completo en curso** (días asistidos en el mes, marcaciones totales del mes y porcentaje de asistencia).
+  - Histórico acumulado sin límite temporal.
+- **Portal Estudiantil Confidencial**:
+  - Búsqueda privada por **Nombre** o **ID** (evita la exposición pública de las listas de estudiantes).
+  - Estado del día en tiempo real (🟢 *Presente hoy* con hora exacta o 🟡 *Sin registro hoy*).
+  - Ficha médica del estudiante con gráficos interactivos y descarga de certificado en CSV.
+- **Panel Administrativo Protegido**:
+  - Acceso seguro mediante clave (`admin123` por defecto, modificable).
+  - **Carga Semanal de Archivos**: Compatible con archivos `.txt`, `.tsv`, `.csv` y `.xlsx` del reloj biométrico. Omite duplicados automáticamente.
+  - **Dashboard Global**: KPIs mensuales e históricos, horas pico de llegada a clases/rotaciones, asistencias por departamento y tendencia diaria.
+  - **Explorador Maestro**: Visualización de absolutamente todos los estudiantes, filtros por rotación/fecha y exportación directa a **Excel (.xlsx)** y **CSV**.
+
+---
+
+## 🚀 Despliegue en Streamlit Community Cloud
+
+Para desplegar esta aplicación de forma gratuita en la nube de Streamlit:
+
+### Paso 1: Crear un nuevo repositorio en GitHub
+1. Ingresa a tu cuenta de [GitHub](https://github.com/new).
+2. Crea un nuevo repositorio (por ejemplo: `asistencia-medicina-udea`).
+3. Elige la visibilidad (*Público* o *Privado*). **No** marques la opción de agregar README ni .gitignore (ya están incluidos en este proyecto).
+
+### Paso 2: Vincular y subir tu código local
+Abre una terminal PowerShell en la carpeta del proyecto y ejecuta:
 
 ```powershell
-# 1. Abre PowerShell en la carpeta del proyecto:
 cd "C:\Users\WinterOS\.gemini\antigravity-ide\scratch\student-attendance-dashboard"
 
-# 2. Ejecuta Streamlit con uv o con el entorno virtual:
+# Reemplaza TU-USUARIO y TU-REPOSITORIO con tus datos de GitHub:
+git remote add origin https://github.com/TU-USUARIO/asistencia-medicina-udea.git
+git push -u origin main
+```
+
+### Paso 3: Desplegar en Streamlit Cloud
+1. Entra a [share.streamlit.io](https://share.streamlit.io/) e inicia sesión con tu cuenta de GitHub.
+2. Haz clic en **"New app"**.
+3. Selecciona tu repositorio recién subido: `TU-USUARIO/asistencia-medicina-udea`.
+4. En **Main file path**, ingresa: `app.py`.
+5. Haz clic en **"Deploy!"**.
+
+¡Tu aplicación quedará en línea con enlace público seguro (HTTPS) para que docentes, coordinadores y estudiantes puedan consultarla desde cualquier dispositivo!
+
+---
+
+## 💻 Ejecución Local
+
+Si deseas correr la aplicación en tu computador:
+
+```powershell
+cd "C:\Users\WinterOS\.gemini\antigravity-ide\scratch\student-attendance-dashboard"
 & "C:\Users\WinterOS\.local\bin\uv.exe" run streamlit run app.py
 ```
 
-O si prefieres usar el ejecutable directo del entorno virtual:
-```powershell
-.venv\Scripts\streamlit.exe run app.py
-```
-
-La aplicación se abrirá automáticamente en tu navegador web en:
-👉 `http://localhost:8501`
-
----
-
-## 🔑 Credenciales por Defecto
-- **Contraseña de Administrador:** `admin123` *(puedes cambiarla en el panel administrativo)*
-- **IDs de Prueba:** `264` (Alejo Pb), `265` (JAVI G), `267` (MARIO V), etc.
+Acceso local: `http://localhost:8501`
+- **Clave administrativa inicial:** `admin123`
+- **IDs de prueba incluidos:** `264` (Alejo Pb), `265` (JAVI G), `267` (MARIO V), etc.
