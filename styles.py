@@ -20,11 +20,11 @@ def apply_custom_styles():
     }
 
     /* ============================================================= */
-    /* BARRA LATERAL (SIDEBAR) - COLOR VERDE "SEMILLERO" (#558b2f) */
+    /* BARRA LATERAL (SIDEBAR) - VERDE SEMILLERO ELEGANTE CON CARDS  */
     /* ============================================================= */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #5c9332 0%, #4c7b27 100%) !important;
-        border-right: 1px solid #436d22 !important;
+        background: linear-gradient(180deg, #4d7c26 0%, #3f681e 50%, #345618 100%) !important;
+        border-right: 1px solid #3b5f1c !important;
         color: #ffffff !important;
     }
 
@@ -32,72 +32,127 @@ def apply_custom_styles():
         color: #ffffff !important;
     }
 
+    [data-testid="stSidebar"] hr {
+        border-color: rgba(255, 255, 255, 0.2) !important;
+        margin: 1.2rem 0 !important;
+    }
+
+    /* Tarjetas contenedoras de secciones en el Sidebar */
+    .sidebar-section-card {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 14px;
+        padding: 1rem 1.1rem;
+        margin-bottom: 1rem;
+        backdrop-filter: blur(8px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .sidebar-title-badge {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: #fef08a;
+        margin-bottom: 0.4rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* Selector de Radio en Sidebar */
+    [data-testid="stSidebar"] .stRadio > div {
+        background: rgba(0, 0, 0, 0.15);
+        border-radius: 12px;
+        padding: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
     [data-testid="stSidebar"] .stRadio label {
         color: #ffffff !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
         font-size: 0.95rem !important;
+        padding: 6px 10px !important;
+        border-radius: 8px !important;
+        transition: background 0.2s ease !important;
     }
 
-    [data-testid="stSidebar"] hr {
-        border-color: rgba(255, 255, 255, 0.25) !important;
+    [data-testid="stSidebar"] .stRadio label:hover {
+        background: rgba(255, 255, 255, 0.15) !important;
     }
 
-    [data-testid="stSidebar"] .stCaption {
-        color: #e2f0d9 !important;
-    }
-
+    /* FIX CRÍTICO: Botones en Sidebar (Texto 100% visible, fondo blanco y contraste perfecto) */
     [data-testid="stSidebar"] button {
         background: #ffffff !important;
-        color: #3f6820 !important;
         border: none !important;
-        font-weight: 700 !important;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+        border-radius: 10px !important;
+        padding: 0.6rem 1.2rem !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+        transition: all 0.2s ease !important;
+        width: 100% !important;
+    }
+
+    [data-testid="stSidebar"] button *,
+    [data-testid="stSidebar"] button p,
+    [data-testid="stSidebar"] button span,
+    [data-testid="stSidebar"] button div {
+        color: #2b4c13 !important;
+        font-weight: 800 !important;
+        font-size: 0.95rem !important;
+        letter-spacing: 0.01em !important;
     }
 
     [data-testid="stSidebar"] button:hover {
-        background: #f0f7ec !important;
-        color: #2e4d16 !important;
-        transform: translateY(-1px) !important;
+        background: #fef9c3 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25) !important;
     }
 
+    [data-testid="stSidebar"] button:hover * {
+        color: #1e3a0c !important;
+    }
+
+    /* Checkbox en sidebar */
     [data-testid="stSidebar"] [data-baseweb="checkbox"] span {
         color: #ffffff !important;
-        font-weight: 500 !important;
+        font-weight: 600 !important;
+        font-size: 0.88rem !important;
+    }
+
+    /* Indicador de pulso en vivo */
+    .pulse-dot {
+        width: 9px;
+        height: 9px;
+        background-color: #4ade80;
+        border-radius: 50%;
+        display: inline-block;
+        box-shadow: 0 0 0 rgba(74, 222, 128, 0.7);
+        animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+        70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+        100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
     }
 
     /* ============================================================= */
-    /* BANNER ESTILO SEMILLERO MEDICINA UDEA                         */
+    /* BANNER PRINCIPAL: SEMILLERO MEDICINA UDEA                     */
     /* ============================================================= */
     .semillero-banner {
         background-color: #ffffff;
         background-image: 
-            linear-gradient(to right, rgba(85, 139, 47, 0.07) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(85, 139, 47, 0.07) 1px, transparent 1px);
-        background-size: 22px 22px;
+            linear-gradient(to right, rgba(85, 139, 47, 0.06) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(85, 139, 47, 0.06) 1px, transparent 1px);
+        background-size: 20px 20px;
         border: 1.5px solid #dce8e0;
         border-radius: 20px;
-        padding: 2.2rem 2.5rem;
+        padding: 2.2rem 2.8rem;
         margin-bottom: 1.8rem;
-        box-shadow: 0 6px 20px -4px rgba(85, 139, 47, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+        box-shadow: 0 6px 22px -4px rgba(85, 139, 47, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
         position: relative;
-        overflow: hidden;
     }
 
-    .semillero-header-row {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        gap: 1.5rem;
-    }
-
-    .semillero-left {
-        display: flex;
-        flex-direction: column;
-        gap: 0.3rem;
-    }
-
-    /* Badge Experiencia vocacional */
     .badge-vocacional {
         display: inline-flex;
         align-items: center;
@@ -110,7 +165,7 @@ def apply_custom_styles():
         border-radius: 9999px;
         width: fit-content;
         letter-spacing: 0.02em;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.6rem;
     }
 
     .dot-gold {
@@ -124,8 +179,9 @@ def apply_custom_styles():
     .semillero-title-group {
         display: flex;
         align-items: baseline;
-        gap: 12px;
+        gap: 14px;
         flex-wrap: wrap;
+        margin-bottom: 0.2rem;
     }
 
     .semillero-medicina {
@@ -139,7 +195,7 @@ def apply_custom_styles():
     }
 
     .semillero-sub-label {
-        font-size: 1.6rem;
+        font-size: 1.7rem;
         font-weight: 800;
         color: #558b2f;
         letter-spacing: -0.01em;
@@ -149,29 +205,27 @@ def apply_custom_styles():
     }
 
     .semillero-tagline {
-        color: #388e3c;
-        font-size: 1.2rem;
+        color: #2e7d32;
+        font-size: 1.22rem;
         font-weight: 700;
         margin-top: 0.45rem;
         letter-spacing: 0.01em;
     }
 
-    /* ============================================================= */
-    /* BOTONES PÍLDORA VERDES (COMO EN LA IMAGEN)                    */
-    /* ============================================================= */
+    /* Píldoras verdes del banner */
     .pill-btn-group {
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.6rem;
     }
 
     .pill-dark-teal {
         background: #558b2f;
         color: #ffffff !important;
-        font-size: 0.85rem;
+        font-size: 0.86rem;
         font-weight: 700;
-        padding: 0.45rem 1.15rem;
+        padding: 0.45rem 1.2rem;
         border-radius: 9999px;
         display: inline-flex;
         align-items: center;
@@ -181,13 +235,13 @@ def apply_custom_styles():
     }
 
     /* ============================================================= */
-    /* TARJETAS Y COMPONENTES VISUALES                               */
+    /* TARJETAS KPI Y COMPONENTES DEL CUERPO                         */
     /* ============================================================= */
     .glass-card {
         background: #ffffff;
         border: 1px solid #dce8e0;
         border-radius: 16px;
-        padding: 1.6rem;
+        padding: 1.8rem;
         box-shadow: 0 4px 18px -2px rgba(85, 139, 47, 0.05);
         color: #1f2937;
     }
@@ -223,7 +277,7 @@ def apply_custom_styles():
         margin-top: 0.35rem;
     }
 
-    /* Badges de estado sobrios sin emojis excesivos */
+    /* Badges de estado */
     .badge-success {
         display: inline-flex;
         align-items: center;
@@ -275,7 +329,7 @@ def apply_custom_styles():
         box-shadow: 0 4px 12px rgba(85, 139, 47, 0.25);
     }
 
-    /* Formulario e inputs */
+    /* Inputs de texto en el cuerpo principal */
     .stTextInput>div>div>input {
         background-color: #ffffff !important;
         border: 1.5px solid #cbd5e1 !important;
@@ -290,7 +344,7 @@ def apply_custom_styles():
         box-shadow: 0 0 0 3px rgba(85, 139, 47, 0.15) !important;
     }
 
-    /* Botones primarios */
+    /* Botones primarios en el cuerpo */
     .stButton>button {
         border-radius: 10px !important;
         font-weight: 700 !important;

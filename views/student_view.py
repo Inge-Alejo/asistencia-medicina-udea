@@ -11,21 +11,21 @@ COLOR_GOLD = "#e58e12"
 COLOR_DEEP_GREEN = "#2e7d32"
 
 def render_student_view():
-    # Banner Semillero Medicina UdeA (Sin 'Nivel 1' y sin exceso de emojis)
+    # Banner Semillero Medicina UdeA (Centrado y elegante)
     st.markdown("""
-    <div class="semillero-banner">
-        <div class="semillero-header-row">
-            <div class="semillero-left">
-                <div class="badge-vocacional"><span class="dot-gold"></span> Experiencia vocacional</div>
-                <div class="semillero-title-group">
-                    <span class="semillero-medicina">Medicina</span>
-                    <span class="semillero-sub-label"><span class="dot-gold" style="width: 10px; height: 10px;"></span> Semillero</span>
-                </div>
-                <div class="semillero-tagline">• Camino a la Formación en Salud •</div>
+    <div class="semillero-banner" style="text-align: center;">
+        <div style="display: inline-block; text-align: center;">
+            <div class="badge-vocacional" style="margin: 0 auto 0.6rem auto;">
+                <span class="dot-gold"></span> Experiencia vocacional
             </div>
+            <div class="semillero-title-group" style="justify-content: center;">
+                <span class="semillero-medicina">Medicina</span>
+                <span class="semillero-sub-label"><span class="dot-gold" style="width: 10px; height: 10px;"></span> Semillero</span>
+            </div>
+            <div class="semillero-tagline">• Camino a la Formación en Salud •</div>
         </div>
     </div>
-    <div class="pill-btn-group">
+    <div class="pill-btn-group" style="justify-content: center;">
         <span class="pill-dark-teal">Control Asistencial</span>
         <span class="pill-dark-teal">Registro Biométrico</span>
         <span class="pill-dark-teal">Balance Mensual</span>
@@ -48,7 +48,8 @@ def render_student_view():
         # Estado inicial limpio y profesional
         st.markdown("""
         <div class="glass-card" style="text-align: center; padding: 2.8rem 2rem; margin-top: 1rem;">
-            <h3 style="color: #2e7d32; margin-bottom: 0.5rem; font-weight: 800; font-size: 1.4rem;">Consulta de Asistencia Semillero Medicina</h3>
+            <div style="font-size: 2.8rem; margin-bottom: 0.6rem; color: #558b2f;">🩺</div>
+            <h3 style="color: #2e7d32; margin-bottom: 0.5rem; font-weight: 800; font-size: 1.45rem;">Consulta de Asistencia Semillero Medicina</h3>
             <p style="color: #4b5563; max-width: 580px; margin: 0 auto 1.5rem auto; font-size: 0.96rem; line-height: 1.6;">
                 Por políticas de protección de datos, este portal no lista públicamente a todos los participantes. 
                 Ingresa tu número de documento o nombre para consultar tus registros biométricos y el balance del mes.
