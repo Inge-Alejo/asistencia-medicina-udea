@@ -1,6 +1,7 @@
 import streamlit as st
+from pathlib import Path
 from datetime import datetime
-from database import init_db, get_overall_kpis
+from database import init_db
 from styles import apply_custom_styles
 from views.student_view import render_student_view
 from views.admin_view import render_admin_view
@@ -19,23 +20,22 @@ init_db()
 # Aplicar estilos CSS personalizados (Verde Semillero elegante con tarjetas)
 apply_custom_styles()
 
-# Obtener KPIs rápidos para mostrar en la barra lateral
-kpis = get_overall_kpis()
-
 # -------------------------------------------------------------
 # BARRA LATERAL (SIDEBAR) - ELEGANTE Y ESTRUCTURADA
 # -------------------------------------------------------------
 with st.sidebar:
-    # Cabecera institucional del Semillero
+    # Logo oficial Universidad de Antioquia - Facultad de Medicina
+    logo_path = Path(__file__).parent / "assets" / "logo_udea_medicina.png"
+    if logo_path.exists():
+        st.image(str(logo_path), use_container_width=True)
+    
+    # Subtítulo institucional del Semillero
     st.markdown("""
-    <div style="text-align: center; padding: 0.8rem 0 1.2rem 0;">
-        <div style="font-size: 0.74rem; font-weight: 800; color: #ffffff; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.95;">
-            Universidad de Antioquia
-        </div>
-        <h2 style="color: #ffffff; margin: 0.25rem 0 0 0; font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.6rem; line-height: 1.15;">
+    <div style="text-align: center; padding: 0.2rem 0 0.9rem 0;">
+        <div style="color: #fef08a; font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em;">
             Semillero Medicina
-        </h2>
-        <div style="color: #fef08a; font-size: 0.86rem; font-weight: 700; margin-top: 0.35rem;">
+        </div>
+        <div style="color: #ffffff; font-size: 0.78rem; opacity: 0.92; margin-top: 0.25rem;">
             Camino a la Formación en Salud
         </div>
     </div>
@@ -79,28 +79,13 @@ with st.sidebar:
             unsafe_allow_html=True
         )
     st.markdown('</div>', unsafe_allow_html=True)
-    
-    # 3. Tarjeta de Resumen Rápido
-    st.markdown('<div class="sidebar-section-card">', unsafe_allow_html=True)
-    st.markdown('<div class="sidebar-title-badge">Resumen del Semillero</div>', unsafe_allow_html=True)
-    st.markdown(f"""
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; font-size: 0.85rem;">
-        <span style="color: #ffffff; opacity: 0.9;">Estudiantes:</span>
-        <span style="font-weight: 800; color: #fef08a; font-size: 1rem;">{kpis['total_students']}</span>
-    </div>
-    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem;">
-        <span style="color: #ffffff; opacity: 0.9;">Marcaciones:</span>
-        <span style="font-weight: 800; color: #fef08a; font-size: 1rem;">{kpis['total_logs']}</span>
-    </div>
-    """, unsafe_allow_html=True)
-    st.markdown('</div>', unsafe_allow_html=True)
 
     # Pie de página institucional
     st.markdown("""
-    <div style="font-size: 0.76rem; color: #ffffff; text-align: center; line-height: 1.4; padding-top: 0.3rem; opacity: 0.9;">
-        <b>Facultad de Medicina • UdeA</b><br>
-        Medellín, Colombia<br>
-        Control Biométrico de Asistencia
+    <div style="font-size: 0.76rem; color: #ffffff; text-align: center; line-height: 1.4; padding-top: 0.8rem; opacity: 0.9;">
+        <b>Universidad de Antioquia</b><br>
+        Facultad de Medicina • Medellín<br>
+        Control de Asistencia
     </div>
     """, unsafe_allow_html=True)
 
