@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
-from database import search_students_by_query, get_student_by_id, get_student_attendance
+from database import search_students_by_query, get_student_by_id, get_student_attendance, mask_name
 
 # Paleta Semillero Medicina UdeA
 COLOR_SEMILLERO_GREEN = "#558b2f"
@@ -37,7 +37,7 @@ def render_student_view():
     with col_search:
         search_query = st.text_input(
             "Buscar estudiante",
-            placeholder="Digita tu ID (ej. 264) o Nombre (ej. Alejo Pb)...",
+            placeholder="Ingrese datos...",
             label_visibility="collapsed",
             key="student_search_input"
         )
@@ -81,7 +81,7 @@ def render_student_view():
     selected_student_id = results[0]['student_id']
     if len(results) > 1:
         st.info(f"Se encontraron **{len(results)}** coincidencias. Selecciona tu perfil:")
-        options = {f"{r['name']} — ID: {r['student_id']} ({r['department']})": r['student_id'] for r in results}
+        options = {f"{mask_name(r['name'])} — ID: {r['student_id']} ({r['department']})": r['student_id'] for r in results}
         selected_label = st.selectbox("Seleccionar perfil", list(options.keys()), label_visibility="collapsed")
         selected_student_id = options[selected_label]
         
@@ -115,7 +115,7 @@ def render_student_view():
             <div style="display: flex; align-items: center; gap: 1.2rem;">
                 <div class="student-avatar">{initials}</div>
                 <div>
-                    <h2 style="color: #2e7d32; margin: 0 0 0.2rem 0; font-weight: 800; font-size: 1.65rem;">{student['name']}</h2>
+                    <h2 style="color: #2e7d32; margin: 0 0 0.2rem 0; font-weight: 800; font-size: 1.65rem;">{mask_name(student['name'])}</h2>
                     <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                         <span style="color: #d97706; font-weight: 800; font-size: 0.95rem;">ID: {student['student_id']}</span>
                         <span style="color: #9ca3af;">•</span>

@@ -393,3 +393,32 @@ def delete_batch(batch_id: str):
     cursor.execute("DELETE FROM import_batches WHERE batch_id = ?", (batch_id,))
     conn.commit()
     conn.close()
+
+def mask_name(name: str) -> str:
+    """
+    Enmascara un nombre completo mostrando solo algunas letras y el resto con asteriscos
+    para cumplimiento estricto de protección de datos (Habeas Data).
+    Ejemplos:
+    - 'Alejandro' -> 'Al******o'
+    - 'Pérez' -> 'Pé**z'
+    - 'Pb' -> 'P*'
+    - 'Ana' -> 'A*a'
+    """
+    if not name or not isinstance(name, str):
+        return ""
+    
+    masked_words = []
+    for word in name.strip().split():
+        clean_word = word.strip()
+        length = len(clean_word)
+        if length <= 1:
+            masked_words.append(clean_word)
+        elif length == 2:
+            masked_words.append(clean_word[0] + "*")
+        elif length == 3:
+            masked_words.append(clean_word[0] + "*" + clean_word[-1])
+        else:
+            masked_words.append(clean_word[:2] + "*" * (length - 3) + clean_word[-1])
+            
+    return " ".join(masked_words)
+

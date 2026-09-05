@@ -291,7 +291,7 @@ def render_admin_view():
 
         col_f1, col_f2, col_f3, col_f4 = st.columns([2, 2, 2, 2])
         with col_f1:
-            filtro_busqueda = st.text_input("Buscar por Nombre o ID", placeholder="Ej: alejo, 264...")
+            filtro_busqueda = st.text_input("Buscar por Nombre o ID", placeholder="Ingrese datos...")
         with col_f2:
             departamentos = get_distinct_departments()
             filtro_dep = st.selectbox("Módulo / Grupo", departamentos)
