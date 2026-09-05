@@ -5,20 +5,38 @@ import plotly.graph_objects as go
 from datetime import datetime
 from database import search_students_by_query, get_student_by_id, get_student_attendance
 
+# Paleta Semillero Medicina UdeA
+COLOR_DARK_TEAL = "#003830"
+COLOR_GOLD = "#e58e12"
+COLOR_GREEN = "#2e7d32"
+
 def render_student_view():
-    # Banner Principal con identidad Medicina UdeA
+    # Banner Semillero Medicina UdeA - Nivel 1 (Exactamente como en la imagen)
     st.markdown("""
-    <div class="hero-container">
-        <div class="hero-badge-udea">Universidad de Antioquia • Facultad de Medicina</div>
-        <h1 class="hero-title">Control de Asistencia Estudiantil</h1>
-        <p class="hero-subtitle">
-            Consulta privada de marcaciones biométricas para estudiantes y personal asistencial.
-            Digita tu número de identificación o nombre completo para acceder a tu historial y métricas mensuales.
-        </p>
+    <div class="semillero-banner">
+        <div class="semillero-header-row">
+            <div class="semillero-left">
+                <div class="badge-vocacional"><span class="dot-gold"></span> Experiencia vocacional</div>
+                <div class="semillero-title-group">
+                    <span class="semillero-medicina">Medicina</span>
+                    <span class="semillero-sub-label"><span class="dot-gold" style="width: 10px; height: 10px;"></span> Semillero</span>
+                </div>
+                <div class="semillero-tagline">• Camino a la Formación en Salud •</div>
+            </div>
+            <div class="pill-nivel">
+                <span class="pill-nivel-text">Nivel</span>
+                <span class="pill-nivel-badge">1</span>
+            </div>
+        </div>
+    </div>
+    <div class="pill-btn-group">
+        <span class="pill-dark-teal">📖 Control Asistencial</span>
+        <span class="pill-dark-teal">📋 Registro Biométrico</span>
+        <span class="pill-dark-teal">⏳ Balance Mensual</span>
     </div>
     """, unsafe_allow_html=True)
     
-    # Campo de búsqueda
+    # Campo de búsqueda confidencial
     col_search, col_btn = st.columns([4, 1])
     with col_search:
         search_query = st.text_input(
@@ -31,19 +49,19 @@ def render_student_view():
         search_btn = st.button("🔍 Consultar", type="primary", use_container_width=True)
         
     if not search_query.strip():
-        # Estado inicial: Información institucional y privacidad
+        # Estado inicial: Información de privacidad y bienvenida
         st.markdown("""
-        <div class="glass-card" style="text-align: center; padding: 3rem 2rem; margin-top: 1rem;">
-            <div style="font-size: 3.5rem; margin-bottom: 1rem;">🩺</div>
-            <h3 style="color: #f0fdf4; margin-bottom: 0.5rem; font-weight: 700;">Consulta Confidencial de Asistencia</h3>
-            <p style="color: #94a3b8; max-width: 580px; margin: 0 auto 1.5rem auto; font-size: 0.95rem; line-height: 1.6;">
-                En cumplimiento con las directrices de privacidad institucional de la Universidad de Antioquia, 
-                este portal permite consultar tus asistencias individuales digitando tu ID o nombre sin exponer las listas generales.
+        <div class="glass-card" style="text-align: center; padding: 2.8rem 2rem; margin-top: 1rem;">
+            <div style="font-size: 3.2rem; margin-bottom: 0.8rem;">🩺</div>
+            <h3 style="color: #003830; margin-bottom: 0.5rem; font-weight: 800;">Consulta de Asistencia Semillero Medicina</h3>
+            <p style="color: #57534e; max-width: 580px; margin: 0 auto 1.5rem auto; font-size: 0.96rem; line-height: 1.6;">
+                Por políticas de protección de datos, este portal no lista públicamente a todos los participantes. 
+                Ingresa tu número de documento o nombre para consultar tus registros biométricos y el balance del mes.
             </p>
             <div style="display: inline-flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-                <span class="badge-info">🏛️ Facultad de Medicina UdeA</span>
-                <span class="badge-info">⚡ Monitoreo Biométrico en Vivo</span>
-                <span class="badge-info">📅 Balance Mensual Completo</span>
+                <span class="pill-dark-teal">🔒 Consulta Confidencial</span>
+                <span class="pill-dark-teal">⚡ Sincronización en Vivo</span>
+                <span class="pill-dark-teal">📅 Horas y Fechas Exactas</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -54,11 +72,11 @@ def render_student_view():
     
     if not results:
         st.markdown(f"""
-        <div class="glass-card" style="text-align: center; padding: 2.5rem 1.5rem; border-color: rgba(239, 68, 68, 0.4);">
-            <div style="font-size: 3rem; margin-bottom: 0.8rem;">🔎</div>
-            <h4 style="color: #f87171; margin-bottom: 0.5rem;">No se encontraron registros</h4>
-            <p style="color: #94a3b8; font-size: 0.9rem; max-width: 480px; margin: 0 auto;">
-                No existe ningún estudiante registrado con el término <b>"{search_query}"</b>. Verifica que hayas digitado correctamente tu nombre o ID asignado en el sistema biométrico.
+        <div class="glass-card" style="text-align: center; padding: 2.2rem 1.5rem; border: 1.5px solid #fca5a5; background-color: #fef2f2;">
+            <div style="font-size: 2.8rem; margin-bottom: 0.5rem;">🔎</div>
+            <h4 style="color: #b91c1c; margin-bottom: 0.4rem; font-weight: 800;">No se encontraron registros</h4>
+            <p style="color: #7f1d1d; font-size: 0.92rem; max-width: 480px; margin: 0 auto;">
+                No existe ningún estudiante registrado con el término <b>"{search_query}"</b>. Verifica que hayas digitado correctamente tu nombre o ID asignado.
             </p>
         </div>
         """, unsafe_allow_html=True)
@@ -89,7 +107,7 @@ def render_student_view():
     # Generar iniciales para avatar
     initials = "".join([part[0].upper() for part in student['name'].split()[:2]]) or "MD"
     
-    # Renderizar tarjeta de perfil estilo Medicina UdeA
+    # Renderizar tarjeta de perfil con diseño del Semillero
     if attended_today:
         hora_marcacion = today_records.iloc[0]['time']
         status_html = f'<div class="badge-success">🟢 Presente hoy ({hora_marcacion})</div>'
@@ -102,11 +120,11 @@ def render_student_view():
             <div style="display: flex; align-items: center; gap: 1.2rem;">
                 <div class="student-avatar">{initials}</div>
                 <div>
-                    <h2 style="color: #ffffff; margin: 0 0 0.3rem 0; font-weight: 800; font-size: 1.6rem;">{student['name']}</h2>
+                    <h2 style="color: #003830; margin: 0 0 0.2rem 0; font-weight: 800; font-size: 1.65rem;">{student['name']}</h2>
                     <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                        <span style="color: #34d399; font-weight: 700; font-size: 0.95rem;">ID: {student['student_id']}</span>
-                        <span style="color: #64748b;">•</span>
-                        <span style="color: #cbd5e1; font-size: 0.95rem;">Rotación / Grupo: <b>{student['department']}</b></span>
+                        <span style="color: #d97706; font-weight: 800; font-size: 0.95rem;">ID: {student['student_id']}</span>
+                        <span style="color: #a8a29e;">•</span>
+                        <span style="color: #57534e; font-size: 0.95rem;">Módulo / Grupo: <b>{student['department']}</b></span>
                     </div>
                 </div>
             </div>
@@ -120,7 +138,6 @@ def render_student_view():
     # Cálculos para el MES COMPLETO
     now = datetime.now()
     mes_actual_str = now.strftime("%Y-%m")
-    nombre_mes = now.strftime("%B %Y").capitalize()
     
     total_asistencias = len(logs_df)
     dias_totales = logs_df['date'].nunique() if not logs_df.empty else 0
@@ -146,33 +163,33 @@ def render_student_view():
     m1, m2, m3, m4 = st.columns(4)
     with m1:
         st.markdown(f"""
-        <div class="kpi-card">
+        <div class="kpi-card" style="border-top-color: #003830;">
             <div class="kpi-label">Marcaciones del Mes</div>
-            <div class="kpi-value" style="color: #34d399;">{marcaciones_este_mes}</div>
+            <div class="kpi-value" style="color: #003830;">{marcaciones_este_mes}</div>
             <div class="kpi-subtext">Mes en curso ({mes_actual_str})</div>
         </div>
         """, unsafe_allow_html=True)
     with m2:
         st.markdown(f"""
-        <div class="kpi-card">
+        <div class="kpi-card" style="border-top-color: #2e7d32;">
             <div class="kpi-label">Días Asistidos (Mes)</div>
-            <div class="kpi-value" style="color: #6ee7b7;">{dias_este_mes} días</div>
-            <div class="kpi-subtext">Fechas activas en el mes</div>
+            <div class="kpi-value" style="color: #2e7d32;">{dias_este_mes} días</div>
+            <div class="kpi-subtext">Jornadas activas</div>
         </div>
         """, unsafe_allow_html=True)
     with m3:
         st.markdown(f"""
-        <div class="kpi-card">
-            <div class="kpi-label">Hora Promedio Llegada</div>
-            <div class="kpi-value" style="color: #fcd34d;">{hora_promedio}</div>
-            <div class="kpi-subtext">Horario habitual de entrada</div>
+        <div class="kpi-card" style="border-top-color: #e58e12;">
+            <div class="kpi-label">Hora Promedio Entrada</div>
+            <div class="kpi-value" style="color: #d97706;">{hora_promedio}</div>
+            <div class="kpi-subtext">Horario habitual de llegada</div>
         </div>
         """, unsafe_allow_html=True)
     with m4:
         st.markdown(f"""
-        <div class="kpi-card">
+        <div class="kpi-card" style="border-top-color: #57534e;">
             <div class="kpi-label">Histórico Acumulado</div>
-            <div class="kpi-value" style="color: #f0fdf4;">{dias_totales}</div>
+            <div class="kpi-value" style="color: #44403c;">{dias_totales}</div>
             <div class="kpi-subtext">Total días asistidos global</div>
         </div>
         """, unsafe_allow_html=True)
@@ -190,7 +207,6 @@ def render_student_view():
         c_chart1, c_chart2 = st.columns(2)
         
         with c_chart1:
-            # Gráfico de asistencias por fecha
             daily_counts = logs_df.groupby('date').size().reset_index(name='Marcaciones')
             daily_counts = daily_counts.sort_values(by='date')
             
@@ -198,43 +214,42 @@ def render_student_view():
                 daily_counts, 
                 x='date', 
                 y='Marcaciones',
-                title="Historial de Asistencias Diarias",
-                labels={'date': 'Fecha', 'Marcaciones': 'Marcaciones Registradas'},
-                color_discrete_sequence=['#059669']
+                title="Historial de Asistencias por Fecha",
+                labels={'date': 'Fecha', 'Marcaciones': 'Marcaciones'},
+                color_discrete_sequence=[COLOR_DARK_TEAL]
             )
             fig1.update_layout(
-                template="plotly_dark",
-                plot_bgcolor="rgba(0,0,0,0)",
-                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="#ffffff",
+                paper_bgcolor="#ffffff",
+                font_color="#1c1917",
                 margin=dict(l=20, r=20, t=40, b=20),
                 height=320,
                 xaxis=dict(showgrid=False),
-                yaxis=dict(showgrid=True, gridcolor="rgba(16, 185, 129, 0.15)")
+                yaxis=dict(showgrid=True, gridcolor="#f5f5f4")
             )
             st.plotly_chart(fig1, use_container_width=True)
             
         with c_chart2:
-            # Horarios exactos de llegada (hora decimal)
             logs_df['minuto_dia'] = logs_df['time'].apply(lambda t: int(t.split(':')[0]) + int(t.split(':')[1])/60.0)
             fig2 = px.scatter(
                 logs_df,
                 x='date',
                 y='minuto_dia',
-                title="Hora de Entrada por Jornada",
+                title="Hora Exacta de Entrada por Fecha",
                 labels={'date': 'Fecha', 'minuto_dia': 'Hora'},
-                color_discrete_sequence=['#34d399'],
+                color_discrete_sequence=[COLOR_GOLD],
                 size=[14]*len(logs_df)
             )
             fig2.update_layout(
-                template="plotly_dark",
-                plot_bgcolor="rgba(0,0,0,0)",
-                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="#ffffff",
+                paper_bgcolor="#ffffff",
+                font_color="#1c1917",
                 margin=dict(l=20, r=20, t=40, b=20),
                 height=320,
                 xaxis=dict(showgrid=False),
                 yaxis=dict(
                     showgrid=True,
-                    gridcolor="rgba(16, 185, 129, 0.15)",
+                    gridcolor="#f5f5f4",
                     tickmode='array',
                     tickvals=[7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
                     ticktext=['7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM']
@@ -243,7 +258,6 @@ def render_student_view():
             st.plotly_chart(fig2, use_container_width=True)
             
     with tab_tabla:
-        # Tabla detallada con descarga
         display_df = logs_df[['date', 'time', 'device_id']].copy()
         display_df.columns = ['Fecha', 'Hora de Entrada', 'Dispositivo']
         
@@ -253,11 +267,10 @@ def render_student_view():
             hide_index=True
         )
         
-        # Botón para descargar reporte individual en Excel o CSV
         csv_data = display_df.to_csv(index=False).encode('utf-8')
         st.download_button(
-            label="📥 Descargar Certificado de Asistencia Individual (CSV)",
+            label="📥 Descargar Reporte Individual (CSV)",
             data=csv_data,
-            file_name=f"asistencia_udea_medicina_{student['student_id']}_{datetime.now().strftime('%Y%m%d')}.csv",
+            file_name=f"asistencia_semillero_medicina_{student['student_id']}_{datetime.now().strftime('%Y%m%d')}.csv",
             mime="text/csv"
         )

@@ -14,23 +14,26 @@ from database import (
     get_batches_df,
     delete_batch,
     save_logs_batch,
+    get_admin_password,
     get_setting,
     set_setting
 )
 from importer import parse_attendance_file, get_sample_attendance_text
 
-# Paleta oficial UdeA Medicina
-UDEA_GREEN_SCALE = ['#006837', '#059669', '#10b981', '#34d399', '#6ee7b7', '#a7f3d0', '#fcd34d']
+COLOR_DARK_TEAL = "#003830"
+COLOR_GOLD = "#e58e12"
+COLOR_GREEN = "#2e7d32"
+SEMILLERO_PALETTE = ['#003830', '#e58e12', '#2e7d32', '#65a30d', '#0284c7', '#78716c']
 
 def render_admin_login():
-    """Formulario de acceso seguro al panel administrativo con estilo Medicina UdeA."""
+    """Formulario de acceso seguro al panel administrativo."""
     st.markdown("""
-    <div class="hero-container" style="max-width: 550px; margin: 2rem auto 1rem auto; text-align: center;">
-        <div class="hero-badge-udea">Universidad de Antioquia • Facultad de Medicina</div>
-        <div style="font-size: 3rem; margin: 0.5rem 0;">🔐</div>
-        <h2 style="color: #ffffff; font-weight: 800; margin-bottom: 0.5rem;">Acceso Administrativo</h2>
-        <p style="color: #cbd5e1; font-size: 0.95rem; margin-bottom: 1.5rem;">
-            Ingresa las credenciales autorizadas de coordinación académica para gestionar cargas semanales y reportes globales.
+    <div class="semillero-banner" style="max-width: 550px; margin: 2rem auto 1.5rem auto; text-align: center;">
+        <div class="badge-vocacional"><span class="dot-gold"></span> Coordinación Académica</div>
+        <div style="font-size: 2.8rem; margin: 0.5rem 0;">🔐</div>
+        <h2 style="color: #003830; font-family: 'Playfair Display', serif; font-weight: 800; margin-bottom: 0.3rem;">Acceso Administrativo</h2>
+        <p style="color: #57534e; font-size: 0.95rem; margin-bottom: 1.5rem;">
+            Panel restringido para docentes y personal autorizado del Semillero de Medicina.
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -38,22 +41,22 @@ def render_admin_login():
     col_l, col_center, col_r = st.columns([1, 2, 1])
     with col_center:
         with st.form("admin_login_form"):
-            password_input = st.text_input("Contraseña de Coordinación", type="password", placeholder="Ingresa tu clave...")
+            password_input = st.text_input("Contraseña de Acceso", type="password", placeholder="Ingresa tu contraseña...")
             submitted = st.form_submit_button("Ingresar al Panel de Gestión", type="primary", use_container_width=True)
             
             if submitted:
-                expected_pwd = get_setting("admin_password", "admin123")
+                expected_pwd = get_admin_password()
                 if password_input == expected_pwd:
                     st.session_state['admin_authenticated'] = True
-                    st.success("¡Autenticación exitosa! Bienvenido.")
+                    st.success("¡Autenticación concedida!")
                     st.rerun()
                 else:
-                    st.error("Contraseña incorrecta. (Clave por defecto: admin123)")
+                    st.error("Contraseña incorrecta. Verifica tus credenciales con el administrador.")
                     
-        st.caption("🔒 *Clave inicial de fábrica: `admin123` (Puedes modificarla en la pestaña de Ajustes)*")
+        st.caption("🔒 *Acceso protegido por credenciales cifradas y variables seguras.*")
 
 def render_admin_view():
-    """Panel administrativo completo con branding Medicina UdeA."""
+    """Panel administrativo completo con diseño del Semillero Medicina UdeA."""
     if not st.session_state.get('admin_authenticated', False):
         render_admin_login()
         return
@@ -62,18 +65,24 @@ def render_admin_view():
     c_title, c_logout = st.columns([5, 1])
     with c_title:
         st.markdown("""
-        <div class="hero-container" style="padding: 1.5rem 2rem; margin-bottom: 1.5rem;">
-            <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div class="semillero-banner" style="padding: 1.5rem 2rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
                 <div>
-                    <div class="hero-badge-udea">Facultad de Medicina • Universidad de Antioquia</div>
-                    <h2 class="hero-title" style="font-size: 1.8rem; margin: 0.2rem 0;">Panel de Gestión de Asistencia</h2>
-                    <p class="hero-subtitle" style="font-size: 0.92rem;">Monitoreo en tiempo real, balance mensual consolidado y carga de reportes biométricos.</p>
+                    <div class="badge-vocacional"><span class="dot-gold"></span> Coordinación Semillero Medicina</div>
+                    <div class="semillero-title-group" style="margin-top: 0.3rem;">
+                        <span class="semillero-medicina" style="font-size: 2.2rem;">Medicina</span>
+                        <span class="semillero-sub-label" style="font-size: 1.2rem;">• Panel Administrativo</span>
+                    </div>
+                </div>
+                <div class="pill-nivel" style="padding: 0.4rem 1rem;">
+                    <span class="pill-nivel-text" style="font-size: 1.3rem;">Nivel</span>
+                    <span class="pill-nivel-badge" style="width: 32px; height: 32px; font-size: 1rem;">1</span>
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
     with c_logout:
-        st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
         if st.button("🚪 Cerrar Sesión", use_container_width=True):
             st.session_state['admin_authenticated'] = False
             st.rerun()
@@ -83,7 +92,7 @@ def render_admin_view():
         "📊 Dashboard Global y Mensual",
         "📁 Carga Semanal de Archivos",
         "📋 Explorador Maestro",
-        "👥 Directorio de Estudiantes & Ajustes"
+        "👥 Directorio & Ajustes"
     ])
 
     # -------------------------------------------------------------
@@ -92,38 +101,38 @@ def render_admin_view():
     with tab_dash:
         kpis = get_overall_kpis()
         
-        # Tarjetas KPI Globales con énfasis en el Mes Completo
+        # Tarjetas KPI Globales
         k1, k2, k3, k4 = st.columns(4)
         with k1:
             st.markdown(f"""
-            <div class="kpi-card">
+            <div class="kpi-card" style="border-top-color: #003830;">
                 <div class="kpi-label">Estudiantes Registrados</div>
-                <div class="kpi-value" style="color: #34d399;">{kpis['total_students']}</div>
-                <div class="kpi-subtext">Base de datos de medicina</div>
+                <div class="kpi-value" style="color: #003830;">{kpis['total_students']}</div>
+                <div class="kpi-subtext">Alumnos en el Semillero</div>
             </div>
             """, unsafe_allow_html=True)
         with k2:
             st.markdown(f"""
-            <div class="kpi-card">
+            <div class="kpi-card" style="border-top-color: #2e7d32;">
                 <div class="kpi-label">Marcaciones del Mes</div>
-                <div class="kpi-value" style="color: #6ee7b7;">{kpis.get('logs_this_month', kpis['total_logs'])}</div>
+                <div class="kpi-value" style="color: #2e7d32;">{kpis.get('logs_this_month', kpis['total_logs'])}</div>
                 <div class="kpi-subtext">Mes {kpis.get('current_month_prefix', '')} ({kpis.get('students_this_month', 0)} alumnos)</div>
             </div>
             """, unsafe_allow_html=True)
         with k3:
             st.markdown(f"""
-            <div class="kpi-card">
+            <div class="kpi-card" style="border-top-color: #e58e12;">
                 <div class="kpi-label">Presentes Hoy</div>
-                <div class="kpi-value" style="color: #a7f3d0;">{kpis['students_today']}</div>
-                <div class="kpi-subtext">Marcaciones del día de hoy</div>
+                <div class="kpi-value" style="color: #d97706;">{kpis['students_today']}</div>
+                <div class="kpi-subtext">Marcaciones de la jornada</div>
             </div>
             """, unsafe_allow_html=True)
         with k4:
             st.markdown(f"""
-            <div class="kpi-card">
+            <div class="kpi-card" style="border-top-color: #57534e;">
                 <div class="kpi-label">Total Histórico</div>
-                <div class="kpi-value" style="color: #fcd34d;">{kpis['total_logs']}</div>
-                <div class="kpi-subtext">Marcaciones acumuladas totales</div>
+                <div class="kpi-value" style="color: #44403c;">{kpis['total_logs']}</div>
+                <div class="kpi-subtext">Total marcaciones acumuladas</div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -133,7 +142,7 @@ def render_admin_view():
         g_col1, g_col2 = st.columns(2)
         
         with g_col1:
-            # Distribución por Hora (Horas Pico de Entrada a Rotaciones/Clases)
+            # Distribución por Hora (Horas Pico de Entrada)
             hourly_df = get_hourly_distribution()
             if not hourly_df.empty:
                 hourly_df['hora_label'] = hourly_df['hora'].apply(lambda h: f"{h:02d}:00")
@@ -141,25 +150,25 @@ def render_admin_view():
                     hourly_df,
                     x='hora_label',
                     y='total',
-                    title="Afluencia por Hora del Día (Horas Pico de Entrada)",
-                    labels={'hora_label': 'Hora de Marcaje', 'total': 'Total Marcaciones'},
-                    color_discrete_sequence=['#006837']
+                    title="Afluencia por Hora del Día (Horas Pico)",
+                    labels={'hora_label': 'Hora de Entrada', 'total': 'Total Marcaciones'},
+                    color_discrete_sequence=[COLOR_DARK_TEAL]
                 )
                 fig_hour.update_layout(
-                    template="plotly_dark",
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="#ffffff",
+                    paper_bgcolor="#ffffff",
+                    font_color="#1c1917",
                     margin=dict(l=20, r=20, t=40, b=20),
                     height=320,
                     xaxis=dict(showgrid=False),
-                    yaxis=dict(showgrid=True, gridcolor="rgba(16, 185, 129, 0.15)")
+                    yaxis=dict(showgrid=True, gridcolor="#f5f5f4")
                 )
                 st.plotly_chart(fig_hour, use_container_width=True)
             else:
                 st.info("Sin datos suficientes para graficar horarios.")
 
         with g_col2:
-            # Asistencia por Departamento / Rotación Clínica
+            # Asistencia por Módulo / Grupo
             students_df = get_all_students_df()
             if not students_df.empty and 'Departamento / Grado' in students_df.columns:
                 dep_counts = students_df.groupby('Departamento / Grado')['Total Asistencias'].sum().reset_index()
@@ -167,14 +176,14 @@ def render_admin_view():
                     dep_counts,
                     names='Departamento / Grado',
                     values='Total Asistencias',
-                    title="Distribución por Departamento / Rotación Clínica",
-                    color_discrete_sequence=UDEA_GREEN_SCALE,
+                    title="Distribución por Módulo / Grupo Académico",
+                    color_discrete_sequence=SEMILLERO_PALETTE,
                     hole=0.45
                 )
                 fig_dep.update_layout(
-                    template="plotly_dark",
-                    plot_bgcolor="rgba(0,0,0,0)",
-                    paper_bgcolor="rgba(0,0,0,0)",
+                    plot_bgcolor="#ffffff",
+                    paper_bgcolor="#ffffff",
+                    font_color="#1c1917",
                     margin=dict(l=20, r=20, t=40, b=20),
                     height=320
                 )
@@ -189,18 +198,18 @@ def render_admin_view():
                 trend_df,
                 x='Fecha',
                 y='Estudiantes Únicos',
-                title="Evolución de Asistencia Diaria (Alumnos Únicos por Jornada)",
+                title="Evolución Diaria de Asistencia (Alumnos Únicos por Jornada)",
                 markers=True,
-                color_discrete_sequence=['#10b981']
+                color_discrete_sequence=[COLOR_GREEN]
             )
             fig_trend.update_layout(
-                template="plotly_dark",
-                plot_bgcolor="rgba(0,0,0,0)",
-                paper_bgcolor="rgba(0,0,0,0)",
+                plot_bgcolor="#ffffff",
+                paper_bgcolor="#ffffff",
+                font_color="#1c1917",
                 margin=dict(l=20, r=20, t=40, b=20),
                 height=300,
                 xaxis=dict(showgrid=False),
-                yaxis=dict(showgrid=True, gridcolor="rgba(16, 185, 129, 0.15)")
+                yaxis=dict(showgrid=True, gridcolor="#f5f5f4")
             )
             st.plotly_chart(fig_trend, use_container_width=True)
 
@@ -210,11 +219,10 @@ def render_admin_view():
     with tab_upload:
         st.markdown("""
         <div class="glass-card" style="margin-bottom: 1.5rem;">
-            <h3 style="color: #ffffff; margin-bottom: 0.5rem; font-weight: 700;">Subir Reporte Biométrico Semanal</h3>
-            <p style="color: #cbd5e1; font-size: 0.95rem; margin: 0;">
-                Carga el archivo exportado por el reloj o dispositivo de control de acceso de la Facultad de Medicina. 
-                Soporta extensiones <code>.txt</code>, <code>.tsv</code>, <code>.csv</code> o <code>.xlsx</code>.
-                El sistema acumula los registros de forma segura y <b>descarta automáticamente duplicados existentes</b>.
+            <h3 style="color: #003830; font-family: 'Playfair Display', serif; margin-bottom: 0.5rem; font-weight: 800;">Subir Reporte Biométrico Semanal</h3>
+            <p style="color: #57534e; font-size: 0.95rem; margin: 0;">
+                Carga el archivo exportado por el dispositivo del Semillero de Medicina (formatos <code>.txt</code>, <code>.tsv</code>, <code>.csv</code> o <code>.xlsx</code>).
+                El sistema acumula los registros y <b>descarta duplicados automáticamente</b> para proteger la integridad de los datos.
             </p>
         </div>
         """, unsafe_allow_html=True)
@@ -228,20 +236,18 @@ def render_admin_view():
             )
         with col_sample:
             st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-            load_sample_btn = st.button("🧪 Cargar Datos de Prueba", use_container_width=True, help="Inserta los registros de prueba con alejo pb, JAVI G, MARIO V...")
+            load_sample_btn = st.button("🧪 Cargar Muestra", use_container_width=True, help="Inserta registros de prueba para verificar el funcionamiento.")
 
-        # Cargar archivo de prueba
         if load_sample_btn:
             try:
                 sample_text = get_sample_attendance_text()
-                parsed_sample = parse_attendance_file(sample_text, "asistencia_medicina_udea.txt")
-                res = save_logs_batch(parsed_sample, "asistencia_medicina_udea.txt")
-                st.success(f"¡Lote de prueba importado con éxito! {res['new_records']} registros nuevos guardados ({res['skipped_duplicates']} duplicados ignorados).")
+                parsed_sample = parse_attendance_file(sample_text, "asistencia_semillero.txt")
+                res = save_logs_batch(parsed_sample, "asistencia_semillero.txt")
+                st.success(f"¡Lote importado con éxito! {res['new_records']} registros nuevos guardados ({res['skipped_duplicates']} duplicados ignorados).")
                 st.rerun()
             except Exception as e:
                 st.error(f"Error al cargar archivo de prueba: {e}")
 
-        # Archivo subido por el usuario
         if uploaded_file is not None:
             try:
                 file_bytes = uploaded_file.getvalue()
@@ -263,7 +269,7 @@ def render_admin_view():
                         result = save_logs_batch(df_clean, uploaded_file.name)
                         st.success(f"""
                         **¡Importación completada exitosamente!**
-                        - 📥 Total de registros procesados: **{result['total_rows']}**
+                        - 📥 Total registros procesados: **{result['total_rows']}**
                         - ✨ Nuevos registros insertados: **{result['new_records']}**
                         - 🔄 Registros existentes (omitidos sin duplicar): **{result['skipped_duplicates']}**
                         """)
@@ -282,7 +288,7 @@ def render_admin_view():
                 batch_to_delete = st.selectbox("Seleccionar lote para eliminar sus marcaciones:", batches_df['ID Lote'].tolist())
                 if st.button(f"🗑️ Revertir Lote {batch_to_delete}", type="secondary"):
                     delete_batch(batch_to_delete)
-                    st.warning(f"Lote {batch_to_delete} eliminado correctamente.")
+                    st.warning(f"Lote {batch_to_delete} revertido correctamente.")
                     st.rerun()
         else:
             st.info("Aún no se han registrado lotes de importación.")
@@ -291,16 +297,15 @@ def render_admin_view():
     # PESTAÑA 3: EXPLORADOR MAESTRO DE ASISTENCIA
     # -------------------------------------------------------------
     with tab_master:
-        st.markdown("### 📋 Registro Consolidado de Asistencia (Todos los Estudiantes)")
-        st.caption("Visualiza, filtra y descarga el historial completo de todos los estudiantes y rotaciones clínicas.")
+        st.markdown("### 📋 Registro Consolidado (Todos los Estudiantes)")
+        st.caption("Visualiza, filtra y descarga el historial completo de asistencia.")
 
-        # Filtros
         col_f1, col_f2, col_f3, col_f4 = st.columns([2, 2, 2, 2])
         with col_f1:
             filtro_busqueda = st.text_input("Buscar por Nombre o ID", placeholder="Ej: alejo, 264...")
         with col_f2:
             departamentos = get_distinct_departments()
-            filtro_dep = st.selectbox("Departamento / Rotación", departamentos)
+            filtro_dep = st.selectbox("Módulo / Grupo", departamentos)
         with col_f3:
             filtro_fecha_inicio = st.date_input("Fecha Desde", value=None)
         with col_f4:
@@ -321,26 +326,25 @@ def render_admin_view():
         display_master = master_df.drop(columns=['Timestamp'], errors='ignore')
         st.dataframe(display_master, use_container_width=True, hide_index=True)
 
-        # Botones de exportación
         col_exp1, col_exp2 = st.columns(2)
         with col_exp1:
             csv_all = display_master.to_csv(index=False).encode('utf-8')
             st.download_button(
                 "📥 Exportar a CSV",
                 data=csv_all,
-                file_name=f"asistencia_udea_medicina_{datetime.now().strftime('%Y%m%d')}.csv",
+                file_name=f"asistencia_semillero_medicina_{datetime.now().strftime('%Y%m%d')}.csv",
                 mime="text/csv",
                 use_container_width=True
             )
         with col_exp2:
             excel_buffer = io.BytesIO()
             with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
-                display_master.to_excel(writer, index=False, sheet_name="Asistencia UdeA")
+                display_master.to_excel(writer, index=False, sheet_name="Asistencia Semillero")
             excel_data = excel_buffer.getvalue()
             st.download_button(
                 "📊 Exportar a Excel (.xlsx)",
                 data=excel_data,
-                file_name=f"asistencia_udea_medicina_{datetime.now().strftime('%Y%m%d')}.xlsx",
+                file_name=f"asistencia_semillero_medicina_{datetime.now().strftime('%Y%m%d')}.xlsx",
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 use_container_width=True
             )
@@ -354,18 +358,24 @@ def render_admin_view():
         st.dataframe(students_catalog, use_container_width=True, hide_index=True)
 
         st.markdown('<div class="divider-custom"></div>', unsafe_allow_html=True)
-        st.subheader("⚙️ Configuración Institucional")
+        st.subheader("⚙️ Configuración y Seguridad")
         
         with st.form("settings_form"):
-            current_pwd = get_setting("admin_password", "admin123")
-            current_inst = get_setting("institution_name", "Universidad de Antioquia - Facultad de Medicina")
+            current_inst = get_setting("institution_name", "Semillero Medicina UdeA - Nivel 1")
+            new_inst = st.text_input("Nombre de la Dependencia", value=current_inst)
             
-            new_inst = st.text_input("Institución / Dependencia", value=current_inst)
-            new_pwd = st.text_input("Cambiar Contraseña Administrativa", value=current_pwd, type="password")
+            st.markdown("#### Cambiar Contraseña Administrativa")
+            actual_pwd_input = st.text_input("Contraseña Actual", type="password", placeholder="Ingresa la contraseña actual...")
+            new_pwd = st.text_input("Nueva Contraseña Compleja", type="password", placeholder="Mínimo 8 caracteres, números y símbolos...")
             
-            save_settings = st.form_submit_button("Guardar Cambios de Configuración", type="primary")
+            save_settings = st.form_submit_button("Guardar Cambios", type="primary")
             if save_settings:
-                set_setting("institution_name", new_inst)
-                set_setting("admin_password", new_pwd)
-                st.success("¡Configuración actualizada con éxito!")
-                st.rerun()
+                if actual_pwd_input != get_admin_password():
+                    st.error("La contraseña actual no es correcta. No se aplicaron cambios.")
+                elif len(new_pwd.strip()) < 8:
+                    st.warning("Por seguridad, la nueva contraseña debe tener al menos 8 caracteres.")
+                else:
+                    set_setting("institution_name", new_inst)
+                    set_setting("admin_password", new_pwd)
+                    st.success("¡Configuración y contraseña actualizadas con éxito!")
+                    st.rerun()

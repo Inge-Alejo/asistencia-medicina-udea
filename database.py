@@ -63,9 +63,10 @@ def init_db():
     );
     """)
     
-    # Configuración por defecto de admin si no existe
-    cursor.execute("INSERT OR IGNORE INTO settings (key, value) VALUES ('admin_password', 'admin123')")
-    cursor.execute("INSERT OR IGNORE INTO settings (key, value) VALUES ('institution_name', 'Sistema de Asistencia Estudiantil')")
+    # Configuración por defecto de admin si no existe (clave compleja)
+    default_secure_pwd = "MedUdeA#2026$Semillero!Salud"
+    cursor.execute("INSERT OR IGNORE INTO settings (key, value) VALUES ('admin_password', ?)", (default_secure_pwd,))
+    cursor.execute("INSERT OR IGNORE INTO settings (key, value) VALUES ('institution_name', 'Semillero Medicina UdeA - Nivel 1')")
     
     # Índices para consultas de alta velocidad
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_logs_student ON attendance_logs(student_id);")
@@ -75,6 +76,21 @@ def init_db():
     
     conn.commit()
     conn.close()
+
+def get_admin_password() -> str:
+    """Obtiene la contraseña administrativa desde Streamlit Secrets, variables de entorno o BD."""
+    try:
+        import streamlit as st
+        if hasattr(st, 'secrets') and "ADMIN_PASSWORD" in st.secrets:
+            return str(st.secrets["ADMIN_PASSWORD"])
+    except Exception:
+        pass
+        
+    env_pwd = os.environ.get("ADMIN_PASSWORD")
+    if env_pwd:
+        return env_pwd
+        
+    return get_setting("admin_password", "MedUdeA#2026$Semillero!Salud")
 
 def save_logs_batch(df_clean: pd.DataFrame, filename: str) -> dict:
     """

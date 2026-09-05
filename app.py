@@ -6,25 +6,18 @@ from styles import apply_custom_styles
 from views.student_view import render_student_view
 from views.admin_view import render_admin_view
 
-# Configuración inicial de Streamlit con identidad Medicina UdeA
+# Configuración inicial de Streamlit
 st.set_page_config(
-    page_title="Asistencia - Facultad de Medicina UdeA",
+    page_title="Semillero Medicina UdeA - Control de Asistencia",
     page_icon="🩺",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Inicializar Base de Datos y sembrar datos de muestra si está vacía
+# Inicializar Base de Datos (en nube o local se crea automáticamente)
 init_db()
-kpis = get_overall_kpis()
-if kpis['total_students'] == 0:
-    try:
-        sample_df = parse_attendance_file(get_sample_attendance_text(), "inicial_medicina_udea.txt")
-        save_logs_batch(sample_df, "inicial_medicina_udea.txt")
-    except Exception:
-        pass
 
-# Aplicar estilos CSS personalizados (Verde y esmeralda UdeA)
+# Aplicar estilos CSS personalizados basados en el diseño del Semillero Medicina
 apply_custom_styles()
 
 # -------------------------------------------------------------
@@ -32,14 +25,16 @@ apply_custom_styles()
 # -------------------------------------------------------------
 with st.sidebar:
     st.markdown("""
-    <div style="text-align: center; padding: 0.8rem 0 1.2rem 0;">
-        <div style="font-size: 2.8rem; margin-bottom: 0.2rem;">🩺</div>
-        <div style="font-size: 0.75rem; font-weight: 800; color: #a7f3d0; text-transform: uppercase; letter-spacing: 0.08em;">
+    <div style="text-align: center; padding: 0.8rem 0 1rem 0;">
+        <div style="font-size: 2.6rem; margin-bottom: 0.2rem;">🩺</div>
+        <div style="font-size: 0.72rem; font-weight: 800; color: #a7f3d0; text-transform: uppercase; letter-spacing: 0.08em;">
             Universidad de Antioquia
         </div>
-        <h3 style="color: #ffffff; margin: 0.2rem 0 0 0; font-weight: 800; font-size: 1.2rem;">Facultad de Medicina</h3>
-        <p style="color: #34d399; font-size: 0.8rem; font-weight: 600; margin-top: 0.2rem;">
-            Control de Asistencia Biométrico
+        <h3 style="color: #ffffff; margin: 0.2rem 0 0 0; font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.35rem;">
+            Semillero Medicina
+        </h3>
+        <p style="color: #e58e12; font-size: 0.85rem; font-weight: 700; margin-top: 0.2rem;">
+            Nivel 1 • Formación en Salud
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -50,7 +45,7 @@ with st.sidebar:
     st.markdown("### 🧭 Modo de Acceso")
     mode = st.radio(
         "Seleccione vista",
-        options=["🎓 Consulta Estudiantes (Público)", "🔐 Panel Administrativo"],
+        options=["🎓 Consulta Estudiantes (Público)", "🔐 Panel de Gestión"],
         label_visibility="collapsed"
     )
     
@@ -59,14 +54,14 @@ with st.sidebar:
     # Monitor de Tiempo Real
     st.markdown("### ⚡ Monitor en Vivo")
     now_str = datetime.now().strftime("%H:%M:%S")
-    st.caption(f"🕒 Última sincronización: **{now_str}**")
+    st.caption(f"🕒 Sincronización: **{now_str}**")
     
     # Botón de refresco manual
     if st.button("🔄 Sincronizar Ahora", use_container_width=True):
         st.rerun()
         
     # Auto-refresco opcional
-    auto_refresh = st.checkbox("Monitoreo continuo (cada 15s)", value=False)
+    auto_refresh = st.checkbox("Monitoreo continuo (15s)", value=False)
     if auto_refresh:
         st.markdown(
             """
@@ -81,10 +76,10 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("""
-    <div style="font-size: 0.78rem; color: #94a3b8; text-align: center; line-height: 1.4; padding-top: 0.5rem;">
-        <b>Medellín, Colombia</b><br>
-        Facultad de Medicina • UdeA<br>
-        Sistema de Registro y Reporte Semanal
+    <div style="font-size: 0.76rem; color: #cbd5e1; text-align: center; line-height: 1.4; padding-top: 0.5rem;">
+        <b>Facultad de Medicina • UdeA</b><br>
+        Medellín, Colombia<br>
+        Control Biométrico de Asistencia
     </div>
     """, unsafe_allow_html=True)
 

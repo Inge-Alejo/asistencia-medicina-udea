@@ -1,18 +1,45 @@
-# Entornos virtuales
+# ==========================================
+# Datos Sensibles y Bases de Datos (Privacidad)
+# ==========================================
+attendance.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Secretos y credenciales
+.streamlit/secrets.toml
+.env
+*.key
+*.pem
+*.secret
+
+# Archivos de datos y reportes personales de estudiantes
+sample_data/
+uploads/
+*.xlsx
+*.xls
+*.csv
+*.tsv
+
+# ==========================================
+# Entornos virtuales y dependencias locales
+# ==========================================
 .venv/
 env/
 venv/
 ENV/
 
+# ==========================================
 # Caché de Python
+# ==========================================
 __pycache__/
 *.py[cod]
 *$py.class
 *.pyc
 
-# Archivos de sistema
+# ==========================================
+# Archivos de sistema y logs
+# ==========================================
 .DS_Store
 Thumbs.db
-
-# Logs
 *.log

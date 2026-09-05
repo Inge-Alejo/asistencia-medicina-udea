@@ -3,7 +3,7 @@ import streamlit as st
 def apply_custom_styles():
     st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap');
 
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', sans-serif;
@@ -13,142 +13,213 @@ def apply_custom_styles():
         background: transparent;
     }
 
-    /* Fondo general: Verde oscuro institucional UdeA y esmeralda profundo */
+    /* Fondo general: Limpio con sutil tono marfil/clínico y soporte de alto contraste */
     .stApp {
-        background: linear-gradient(135deg, #03140e 0%, #062319 50%, #021a12 100%);
-        color: #f0fdf4;
+        background: #f8faf9;
+        color: #1c1917;
     }
 
-    /* Hero Banner Institucional UdeA */
-    .hero-container {
-        background: linear-gradient(135deg, rgba(6, 46, 33, 0.85) 0%, rgba(3, 26, 18, 0.95) 100%);
-        border: 1px solid rgba(16, 185, 129, 0.25);
+    /* ============================================================= */
+    /* BANNER ESTILO SEMILLERO MEDICINA UDEA                         */
+    /* ============================================================= */
+    .semillero-banner {
+        background-color: #ffffff;
+        background-image: 
+            linear-gradient(to right, rgba(0, 56, 48, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 56, 48, 0.05) 1px, transparent 1px);
+        background-size: 24px 24px;
+        border: 1px solid #e7e5e4;
         border-radius: 20px;
-        padding: 2.2rem 2rem;
-        margin-bottom: 2rem;
-        backdrop-filter: blur(14px);
-        box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+        padding: 2.2rem 2.5rem;
+        margin-bottom: 1.8rem;
+        box-shadow: 0 10px 25px -5px rgba(0, 56, 48, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
         position: relative;
         overflow: hidden;
     }
 
-    .hero-container::before {
-        content: '';
-        position: absolute;
-        top: -40%;
-        right: -15%;
-        width: 320px;
-        height: 320px;
-        background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
-        border-radius: 50%;
-        pointer-events: none;
+    .semillero-header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1.5rem;
     }
 
-    .hero-badge-udea {
+    .semillero-left {
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    /* Badge Experiencia vocacional */
+    .badge-vocacional {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        background: rgba(16, 185, 129, 0.15);
-        color: #6ee7b7;
-        border: 1px solid rgba(52, 211, 153, 0.35);
-        padding: 0.25rem 0.75rem;
-        border-radius: 9999px;
+        gap: 7px;
+        background-color: #003830;
+        color: #ffffff;
         font-size: 0.8rem;
         font-weight: 700;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        margin-bottom: 0.8rem;
+        padding: 0.35rem 0.95rem;
+        border-radius: 9999px;
+        width: fit-content;
+        letter-spacing: 0.02em;
+        margin-bottom: 0.4rem;
     }
 
-    .hero-title {
-        font-size: 2.2rem;
+    .dot-gold {
+        width: 8px;
+        height: 8px;
+        background-color: #e58e12;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .semillero-title-group {
+        display: flex;
+        align-items: baseline;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .semillero-medicina {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 3.5rem;
         font-weight: 800;
+        color: #d97706;
+        line-height: 1;
         letter-spacing: -0.02em;
-        background: linear-gradient(135deg, #ffffff 40%, #a7f3d0 80%, #34d399 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin: 0 0 0.5rem 0;
+        position: relative;
+        display: inline-block;
     }
 
-    .hero-subtitle {
-        color: #cbd5e1;
-        font-size: 1.02rem;
-        font-weight: 400;
-        margin: 0;
-        max-width: 780px;
-        line-height: 1.55;
+    /* Puntos sobre la 'e' de Medicina como en la imagen */
+    .semillero-sub-label {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #558b2f;
+        letter-spacing: -0.01em;
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 
-    /* Tarjetas Glassmorphic estilo UdeA */
+    .semillero-tagline {
+        color: #2e7d32;
+        font-size: 1.15rem;
+        font-weight: 700;
+        margin-top: 0.4rem;
+        letter-spacing: 0.01em;
+    }
+
+    /* Pill Nivel 1 en el banner derecho */
+    .pill-nivel {
+        background-color: #003830;
+        border-radius: 9999px;
+        padding: 0.65rem 1.4rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 4px 14px rgba(0, 56, 48, 0.2);
+    }
+
+    .pill-nivel-text {
+        font-family: 'Playfair Display', serif;
+        color: #ffffff;
+        font-size: 1.8rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+    }
+
+    .pill-nivel-badge {
+        background-color: #e58e12;
+        color: #ffffff;
+        font-size: 1.3rem;
+        font-weight: 800;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(229, 142, 18, 0.4);
+    }
+
+    /* Badges de filtros y categorías de la imagen */
+    .pill-btn-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+    }
+
+    .pill-dark-teal {
+        background-color: #003830;
+        color: #ffffff;
+        font-size: 0.85rem;
+        font-weight: 700;
+        padding: 0.45rem 1.1rem;
+        border-radius: 9999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        box-shadow: 0 2px 6px rgba(0, 56, 48, 0.15);
+    }
+
+    /* ============================================================= */
+    /* TARJETAS Y COMPONENTES VISUALES                               */
+    /* ============================================================= */
     .glass-card {
-        background: rgba(6, 35, 25, 0.7);
-        border: 1px solid rgba(16, 185, 129, 0.2);
+        background: #ffffff;
+        border: 1px solid #e7e5e4;
         border-radius: 16px;
         padding: 1.5rem;
-        backdrop-filter: blur(12px);
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.35);
-        transition: transform 0.2s ease, border-color 0.2s ease;
+        box-shadow: 0 4px 20px -2px rgba(0, 56, 48, 0.05);
+        color: #1c1917;
     }
 
-    .glass-card:hover {
-        border-color: rgba(52, 211, 153, 0.45);
-        transform: translateY(-2px);
-    }
-
-    /* Tarjetas de Métricas KPI */
     .kpi-card {
-        background: linear-gradient(135deg, rgba(8, 48, 35, 0.75) 0%, rgba(4, 28, 20, 0.85) 100%);
-        border: 1px solid rgba(16, 185, 129, 0.25);
-        border-radius: 16px;
-        padding: 1.25rem 1.4rem;
-        box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.35);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .kpi-card::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        height: 3px;
-        background: linear-gradient(90deg, #059669, #34d399);
+        background: #ffffff;
+        border: 1px solid #e7e5e4;
+        border-top: 4px solid #003830;
+        border-radius: 14px;
+        padding: 1.25rem 1.3rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
     }
 
     .kpi-label {
-        color: #94a3b8;
-        font-size: 0.85rem;
-        font-weight: 600;
+        color: #57534e;
+        font-size: 0.82rem;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         margin-bottom: 0.3rem;
     }
 
     .kpi-value {
-        font-size: 2rem;
+        font-size: 2.1rem;
         font-weight: 800;
-        color: #f0fdf4;
+        color: #003830;
         line-height: 1.1;
     }
 
     .kpi-subtext {
-        font-size: 0.8rem;
-        color: #86efac;
-        margin-top: 0.3rem;
+        font-size: 0.82rem;
+        color: #78716c;
+        margin-top: 0.35rem;
     }
 
-    /* Badges */
+    /* Badges de estado */
     .badge-success {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: rgba(16, 185, 129, 0.2);
-        color: #34d399;
-        border: 1px solid rgba(52, 211, 153, 0.4);
-        padding: 0.4rem 0.9rem;
+        background: #ecfdf5;
+        color: #047857;
+        border: 1px solid #a7f3d0;
+        padding: 0.4rem 0.95rem;
         border-radius: 9999px;
-        font-size: 0.85rem;
+        font-size: 0.88rem;
         font-weight: 700;
     }
 
@@ -156,122 +227,122 @@ def apply_custom_styles():
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: rgba(245, 158, 11, 0.15);
-        color: #fcd34d;
-        border: 1px solid rgba(251, 191, 36, 0.35);
-        padding: 0.4rem 0.9rem;
+        background: #fffbeb;
+        color: #b45309;
+        border: 1px solid #fde68a;
+        padding: 0.4rem 0.95rem;
         border-radius: 9999px;
-        font-size: 0.85rem;
+        font-size: 0.88rem;
         font-weight: 700;
-    }
-
-    .badge-info {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        background: rgba(5, 150, 105, 0.2);
-        color: #6ee7b7;
-        border: 1px solid rgba(16, 185, 129, 0.35);
-        padding: 0.4rem 0.9rem;
-        border-radius: 9999px;
-        font-size: 0.85rem;
-        font-weight: 600;
     }
 
     /* Tarjeta Perfil de Estudiante */
     .student-profile-card {
-        background: linear-gradient(135deg, rgba(8, 48, 35, 0.9) 0%, rgba(3, 24, 17, 0.95) 100%);
-        border: 1px solid rgba(52, 211, 153, 0.35);
-        border-radius: 20px;
-        padding: 2rem;
-        box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.5), 0 0 35px -10px rgba(16, 185, 129, 0.2);
-        margin-bottom: 2rem;
+        background: #ffffff;
+        border: 1px solid #e7e5e4;
+        border-left: 6px solid #e58e12;
+        border-radius: 16px;
+        padding: 1.8rem;
+        box-shadow: 0 8px 24px -4px rgba(0, 56, 48, 0.06);
+        margin-bottom: 1.8rem;
     }
 
     .student-avatar {
-        width: 68px;
-        height: 68px;
-        border-radius: 18px;
-        background: linear-gradient(135deg, #006837 0%, #059669 100%);
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        background: linear-gradient(135deg, #003830 0%, #2e7d32 100%);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 1.8rem;
+        font-size: 1.7rem;
         color: #ffffff;
         font-weight: 800;
-        box-shadow: 0 8px 16px rgba(0, 104, 55, 0.4);
-        border: 2px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 4px 12px rgba(0, 56, 48, 0.25);
     }
 
-    /* Inputs y Formularios */
+    /* Formulario e inputs */
     .stTextInput>div>div>input {
-        background-color: rgba(6, 32, 23, 0.85) !important;
-        border: 1px solid rgba(52, 211, 153, 0.25) !important;
-        color: #f0fdf4 !important;
-        border-radius: 12px !important;
-        padding: 0.75rem 1rem !important;
+        background-color: #ffffff !important;
+        border: 1.5px solid #d6d3d1 !important;
+        color: #1c1917 !important;
+        border-radius: 10px !important;
+        padding: 0.7rem 1rem !important;
         font-size: 1rem !important;
     }
 
     .stTextInput>div>div>input:focus {
-        border-color: #10b981 !important;
-        box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.3) !important;
+        border-color: #003830 !important;
+        box-shadow: 0 0 0 3px rgba(0, 56, 48, 0.15) !important;
     }
 
-    /* Botones estilo Verde UdeA */
+    /* Botones principales: Dark Teal con hover verde/dorado */
     .stButton>button {
-        border-radius: 12px !important;
+        border-radius: 10px !important;
         font-weight: 700 !important;
-        padding: 0.6rem 1.4rem !important;
+        padding: 0.55rem 1.3rem !important;
         transition: all 0.2s ease !important;
-        border: none !important;
     }
 
     .stButton>button[kind="primary"] {
-        background: linear-gradient(135deg, #006837 0%, #059669 100%) !important;
-        color: white !important;
-        box-shadow: 0 4px 14px rgba(0, 104, 55, 0.4) !important;
+        background: #003830 !important;
+        color: #ffffff !important;
+        border: none !important;
+        box-shadow: 0 3px 10px rgba(0, 56, 48, 0.25) !important;
     }
 
     .stButton>button[kind="primary"]:hover {
-        background: linear-gradient(135deg, #059669 0%, #10b981 100%) !important;
+        background: #2e7d32 !important;
+        box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3) !important;
         transform: translateY(-1px) !important;
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
     }
 
-    /* Pestañas (Tabs) */
+    /* Pestañas (Tabs) estilo imagen */
     .stTabs [data-baseweb="tab-list"] {
-        gap: 8px;
-        background-color: rgba(4, 25, 18, 0.7);
-        padding: 6px;
-        border-radius: 14px;
-        border: 1px solid rgba(16, 185, 129, 0.15);
+        gap: 6px;
+        background-color: #f5f5f4;
+        padding: 5px;
+        border-radius: 12px;
+        border: 1px solid #e7e5e4;
     }
 
     .stTabs [data-baseweb="tab"] {
-        border-radius: 10px;
-        color: #94a3b8;
-        font-weight: 600;
-        padding: 8px 18px;
+        border-radius: 8px;
+        color: #57534e;
+        font-weight: 700;
+        padding: 8px 16px;
     }
 
     .stTabs [aria-selected="true"] {
-        background-color: rgba(16, 185, 129, 0.2) !important;
-        color: #34d399 !important;
-        font-weight: 700;
+        background-color: #ffffff !important;
+        color: #d97706 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Sidebar personalizado */
+    [data-testid="stSidebar"] {
+        background-color: #002924;
+        color: #f5f5f4;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
+        color: #f5f5f4;
+    }
+
+    [data-testid="stSidebar"] hr {
+        border-color: rgba(255, 255, 255, 0.12);
     }
 
     /* Tablas Dataframe */
     [data-testid="stDataFrame"] {
-        border: 1px solid rgba(16, 185, 129, 0.2) !important;
-        border-radius: 14px !important;
-        overflow: hidden !important;
+        border: 1px solid #e7e5e4 !important;
+        border-radius: 12px !important;
+        background-color: #ffffff !important;
     }
 
-    /* Separador sutil */
     .divider-custom {
         height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(52, 211, 153, 0.25), transparent);
+        background: #e7e5e4;
         margin: 1.5rem 0;
     }
     </style>
