@@ -20,29 +20,49 @@ def apply_custom_styles():
     }
 
     /* ============================================================= */
-    /* BARRA LATERAL (SIDEBAR) - ESTILO CLARO Y LUMINOSO             */
+    /* BARRA LATERAL (SIDEBAR) - COLOR VERDE "SEMILLERO" (#558b2f) */
     /* ============================================================= */
     [data-testid="stSidebar"] {
-        background: #f2f7f4 !important;
-        border-right: 1px solid #dce8e0 !important;
-        color: #1f2937 !important;
+        background: linear-gradient(180deg, #5c9332 0%, #4c7b27 100%) !important;
+        border-right: 1px solid #436d22 !important;
+        color: #ffffff !important;
     }
 
     [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] {
-        color: #1f2937 !important;
+        color: #ffffff !important;
     }
 
     [data-testid="stSidebar"] .stRadio label {
-        color: #1f2937 !important;
+        color: #ffffff !important;
         font-weight: 600 !important;
+        font-size: 0.95rem !important;
     }
 
     [data-testid="stSidebar"] hr {
-        border-color: #dce8e0 !important;
+        border-color: rgba(255, 255, 255, 0.25) !important;
     }
 
     [data-testid="stSidebar"] .stCaption {
-        color: #4b5563 !important;
+        color: #e2f0d9 !important;
+    }
+
+    [data-testid="stSidebar"] button {
+        background: #ffffff !important;
+        color: #3f6820 !important;
+        border: none !important;
+        font-weight: 700 !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    [data-testid="stSidebar"] button:hover {
+        background: #f0f7ec !important;
+        color: #2e4d16 !important;
+        transform: translateY(-1px) !important;
+    }
+
+    [data-testid="stSidebar"] [data-baseweb="checkbox"] span {
+        color: #ffffff !important;
+        font-weight: 500 !important;
     }
 
     /* ============================================================= */
@@ -51,14 +71,14 @@ def apply_custom_styles():
     .semillero-banner {
         background-color: #ffffff;
         background-image: 
-            linear-gradient(to right, rgba(46, 125, 50, 0.06) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(46, 125, 50, 0.06) 1px, transparent 1px);
+            linear-gradient(to right, rgba(85, 139, 47, 0.07) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(85, 139, 47, 0.07) 1px, transparent 1px);
         background-size: 22px 22px;
         border: 1.5px solid #dce8e0;
         border-radius: 20px;
         padding: 2.2rem 2.5rem;
         margin-bottom: 1.8rem;
-        box-shadow: 0 8px 24px -4px rgba(46, 125, 50, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+        box-shadow: 0 6px 20px -4px rgba(85, 139, 47, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
         position: relative;
         overflow: hidden;
     }
@@ -66,7 +86,7 @@ def apply_custom_styles():
     .semillero-header-row {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         flex-wrap: wrap;
         gap: 1.5rem;
     }
@@ -104,13 +124,13 @@ def apply_custom_styles():
     .semillero-title-group {
         display: flex;
         align-items: baseline;
-        gap: 10px;
+        gap: 12px;
         flex-wrap: wrap;
     }
 
     .semillero-medicina {
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 3.5rem;
+        font-size: 3.6rem;
         font-weight: 800;
         color: #d97706;
         line-height: 1;
@@ -119,54 +139,21 @@ def apply_custom_styles():
     }
 
     .semillero-sub-label {
-        font-size: 1.55rem;
+        font-size: 1.6rem;
         font-weight: 800;
         color: #558b2f;
         letter-spacing: -0.01em;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 8px;
     }
 
     .semillero-tagline {
-        color: #2e7d32;
-        font-size: 1.18rem;
+        color: #388e3c;
+        font-size: 1.2rem;
         font-weight: 700;
-        margin-top: 0.4rem;
+        margin-top: 0.45rem;
         letter-spacing: 0.01em;
-    }
-
-    /* Pill Nivel 1 en el banner */
-    .pill-nivel {
-        background-color: #004d40;
-        border-radius: 9999px;
-        padding: 0.65rem 1.4rem;
-        display: inline-flex;
-        align-items: center;
-        gap: 14px;
-        box-shadow: 0 4px 14px rgba(0, 77, 64, 0.2);
-    }
-
-    .pill-nivel-text {
-        font-family: 'Playfair Display', serif;
-        color: #ffffff;
-        font-size: 1.8rem;
-        font-weight: 600;
-        letter-spacing: 0.04em;
-    }
-
-    .pill-nivel-badge {
-        background-color: #e58e12;
-        color: #ffffff;
-        font-size: 1.3rem;
-        font-weight: 800;
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 8px rgba(229, 142, 18, 0.4);
     }
 
     /* ============================================================= */
@@ -180,7 +167,7 @@ def apply_custom_styles():
     }
 
     .pill-dark-teal {
-        background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
+        background: #558b2f;
         color: #ffffff !important;
         font-size: 0.85rem;
         font-weight: 700;
@@ -189,7 +176,7 @@ def apply_custom_styles():
         display: inline-flex;
         align-items: center;
         gap: 7px;
-        box-shadow: 0 2px 8px rgba(46, 125, 50, 0.25);
+        box-shadow: 0 2px 6px rgba(85, 139, 47, 0.25);
         border: none;
     }
 
@@ -201,14 +188,14 @@ def apply_custom_styles():
         border: 1px solid #dce8e0;
         border-radius: 16px;
         padding: 1.6rem;
-        box-shadow: 0 4px 18px -2px rgba(46, 125, 50, 0.05);
+        box-shadow: 0 4px 18px -2px rgba(85, 139, 47, 0.05);
         color: #1f2937;
     }
 
     .kpi-card {
         background: #ffffff;
         border: 1px solid #dce8e0;
-        border-top: 4px solid #2e7d32;
+        border-top: 4px solid #558b2f;
         border-radius: 14px;
         padding: 1.25rem 1.3rem;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
@@ -226,7 +213,7 @@ def apply_custom_styles():
     .kpi-value {
         font-size: 2.1rem;
         font-weight: 800;
-        color: #2e7d32;
+        color: #558b2f;
         line-height: 1.1;
     }
 
@@ -236,7 +223,7 @@ def apply_custom_styles():
         margin-top: 0.35rem;
     }
 
-    /* Badges de estado */
+    /* Badges de estado sobrios sin emojis excesivos */
     .badge-success {
         display: inline-flex;
         align-items: center;
@@ -267,10 +254,10 @@ def apply_custom_styles():
     .student-profile-card {
         background: #ffffff;
         border: 1px solid #dce8e0;
-        border-left: 6px solid #e58e12;
+        border-left: 6px solid #d97706;
         border-radius: 16px;
         padding: 1.8rem;
-        box-shadow: 0 8px 24px -4px rgba(46, 125, 50, 0.07);
+        box-shadow: 0 8px 24px -4px rgba(85, 139, 47, 0.07);
         margin-bottom: 1.8rem;
     }
 
@@ -278,14 +265,14 @@ def apply_custom_styles():
         width: 64px;
         height: 64px;
         border-radius: 16px;
-        background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%);
+        background: linear-gradient(135deg, #558b2f 0%, #388e3c 100%);
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.7rem;
         color: #ffffff;
         font-weight: 800;
-        box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
+        box-shadow: 0 4px 12px rgba(85, 139, 47, 0.25);
     }
 
     /* Formulario e inputs */
@@ -299,11 +286,11 @@ def apply_custom_styles():
     }
 
     .stTextInput>div>div>input:focus {
-        border-color: #2e7d32 !important;
-        box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15) !important;
+        border-color: #558b2f !important;
+        box-shadow: 0 0 0 3px rgba(85, 139, 47, 0.15) !important;
     }
 
-    /* Botones primarios en verde UdeA / Semillero */
+    /* Botones primarios */
     .stButton>button {
         border-radius: 10px !important;
         font-weight: 700 !important;
@@ -312,15 +299,15 @@ def apply_custom_styles():
     }
 
     .stButton>button[kind="primary"] {
-        background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%) !important;
+        background: #558b2f !important;
         color: #ffffff !important;
         border: none !important;
-        box-shadow: 0 3px 10px rgba(46, 125, 50, 0.25) !important;
+        box-shadow: 0 3px 10px rgba(85, 139, 47, 0.25) !important;
     }
 
     .stButton>button[kind="primary"]:hover {
-        background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%) !important;
-        box-shadow: 0 5px 15px rgba(27, 94, 32, 0.3) !important;
+        background: #3f6820 !important;
+        box-shadow: 0 5px 15px rgba(63, 104, 32, 0.3) !important;
         transform: translateY(-1px) !important;
     }
 
