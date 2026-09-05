@@ -108,42 +108,31 @@ def render_mini_calendar(logs_df: pd.DataFrame):
         elif is_today:
             badge_html = '<span class="cal-check-badge" style="color: #e58e12;">Hoy</span>'
             
-        grid_cells_html.append(f"""
-        <div class="{' '.join(classes)}" title="{title_attr}">
-            <span>{day}</span>
-            {badge_html}
-        </div>
-        """)
+        classes_str = " ".join(classes)
+        grid_cells_html.append(
+            f'<div class="{classes_str}" title="{title_attr}">'
+            f'<span>{day}</span>'
+            f'{badge_html}'
+            f'</div>'
+        )
         
     month_title = f"{spanish_months_map.get(f'{month_sel:02d}', '')} {year_sel}"
-    calendar_html = f"""
-    <div class="cal-card">
-        <div class="cal-month-title">
-            <span>📅 {month_title}</span>
-        </div>
-        <div class="cal-grid-header">
-            {header_cells_html}
-        </div>
-        <div class="cal-grid-days">
-            {''.join(grid_cells_html)}
-        </div>
-        <div class="cal-legend">
-            <div class="cal-legend-item">
-                <div class="cal-legend-dot" style="background: #2e7d32;"></div>
-                <span>Día asistido (✓)</span>
-            </div>
-            <div class="cal-legend-item">
-                <div class="cal-legend-dot" style="background: #f9fafb; border: 1px solid #d1d5db;"></div>
-                <span>Sin registro</span>
-            </div>
-            <div class="cal-legend-item">
-                <div class="cal-legend-dot" style="background: #ffffff; border: 2px solid #e58e12;"></div>
-                <span>Fecha de hoy</span>
-            </div>
-        </div>
-    </div>
-    """
-    st.markdown(calendar_html, unsafe_allow_html=True)
+    calendar_html = (
+        f'<div class="cal-card">'
+        f'<div class="cal-month-title"><span>📅 {month_title}</span></div>'
+        f'<div class="cal-grid-header">{header_cells_html}</div>'
+        f'<div class="cal-grid-days">{"".join(grid_cells_html)}</div>'
+        f'<div class="cal-legend">'
+        f'<div class="cal-legend-item"><div class="cal-legend-dot" style="background: #2e7d32;"></div><span>Día asistido (✓)</span></div>'
+        f'<div class="cal-legend-item"><div class="cal-legend-dot" style="background: #f9fafb; border: 1px solid #d1d5db;"></div><span>Sin registro</span></div>'
+        f'<div class="cal-legend-item"><div class="cal-legend-dot" style="background: #ffffff; border: 2px solid #e58e12;"></div><span>Fecha de hoy</span></div>'
+        f'</div>'
+        f'</div>'
+    )
+    if hasattr(st, "html"):
+        st.html(calendar_html)
+    else:
+        st.markdown(calendar_html, unsafe_allow_html=True)
 
 def render_student_view():
     # Banner Semillero Medicina UdeA (Centrado y elegante)
@@ -279,29 +268,29 @@ def render_student_view():
         badge_text = "🔴 En Riesgo de Inasistencia"
         msg_cert = "Alerta: Tu asistencia actual está por debajo del 80% mínimo reglamentario. Consulta tu situación con la coordinación del Semillero."
         
-    st.markdown(f"""
-    <div class="cert-progress-card">
-        <div class="cert-header-flex">
-            <div>
-                <div class="cert-title">Cumplimiento y Avance de Certificación</div>
-                <div class="cert-subtitle">Requisito reglamentario: Mínimo 80% de asistencia a las jornadas presenciales</div>
-            </div>
-            <div class="cert-pct-badge" style="background-color: {badge_bg}; color: {color_cert};">
-                {pct_asistencia}%
-            </div>
-        </div>
-        <div class="cert-bar-track">
-            <div class="cert-bar-fill" style="width: {pct_asistencia}%; background-color: {color_cert};"></div>
-        </div>
-        <div class="cert-footer-flex">
-            <span style="font-weight: 800; color: {color_cert};">{badge_text}</span>
-            <span style="color: #4b5563;"><b>{dias_asistidos_global}</b> de <b>{total_sesiones_programadas}</b> jornadas registradas</span>
-        </div>
-        <div style="font-size: 0.83rem; color: #6b7280; margin-top: 0.45rem; line-height: 1.4;">
-            {msg_cert}
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    cert_html = (
+        f'<div class="cert-progress-card">'
+        f'<div class="cert-header-flex">'
+        f'<div>'
+        f'<div class="cert-title">Cumplimiento y Avance de Certificación</div>'
+        f'<div class="cert-subtitle">Requisito reglamentario: Mínimo 80% de asistencia a las jornadas presenciales</div>'
+        f'</div>'
+        f'<div class="cert-pct-badge" style="background-color: {badge_bg}; color: {color_cert};">{pct_asistencia}%</div>'
+        f'</div>'
+        f'<div class="cert-bar-track">'
+        f'<div class="cert-bar-fill" style="width: {pct_asistencia}%; background-color: {color_cert};"></div>'
+        f'</div>'
+        f'<div class="cert-footer-flex">'
+        f'<span style="font-weight: 800; color: {color_cert};">{badge_text}</span>'
+        f'<span style="color: #4b5563;"><b>{dias_asistidos_global}</b> de <b>{total_sesiones_programadas}</b> jornadas registradas</span>'
+        f'</div>'
+        f'<div style="font-size: 0.83rem; color: #6b7280; margin-top: 0.45rem; line-height: 1.4;">{msg_cert}</div>'
+        f'</div>'
+    )
+    if hasattr(st, "html"):
+        st.html(cert_html)
+    else:
+        st.markdown(cert_html, unsafe_allow_html=True)
     
     # Métricas numéricas del mes
     now = datetime.now()
