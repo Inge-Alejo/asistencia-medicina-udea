@@ -25,11 +25,6 @@ def render_student_view():
             <div class="semillero-tagline">• Camino a la Formación en Salud •</div>
         </div>
     </div>
-    <div class="pill-btn-group" style="justify-content: center;">
-        <span class="pill-dark-teal">Control Asistencial</span>
-        <span class="pill-dark-teal">Registro Biométrico</span>
-        <span class="pill-dark-teal">Balance Mensual</span>
-    </div>
     """, unsafe_allow_html=True)
     
     # Campo de búsqueda confidencial
@@ -49,16 +44,11 @@ def render_student_view():
         st.markdown("""
         <div class="glass-card" style="text-align: center; padding: 2.8rem 2rem; margin-top: 1rem;">
             <div style="font-size: 2.8rem; margin-bottom: 0.6rem; color: #558b2f;">🩺</div>
-            <h3 style="color: #2e7d32; margin-bottom: 0.5rem; font-weight: 800; font-size: 1.45rem;">Consulta de Asistencia Semillero Medicina</h3>
-            <p style="color: #4b5563; max-width: 580px; margin: 0 auto 1.5rem auto; font-size: 0.96rem; line-height: 1.6;">
+            <h3 style="color: #2e7d32; margin-bottom: 0.5rem; font-weight: 800; font-size: 1.45rem;">Control de Asistencia Semillero Medicina</h3>
+            <p style="color: #4b5563; max-width: 580px; margin: 0 auto; font-size: 0.96rem; line-height: 1.6;">
                 Por políticas de protección de datos, este portal no lista públicamente a todos los participantes. 
-                Ingresa tu número de documento o nombre para consultar tus registros biométricos y el balance del mes.
+                Ingresa tu número de documento para consultar tu estado y registros de asistencia.
             </p>
-            <div style="display: inline-flex; gap: 10px; flex-wrap: wrap; justify-content: center;">
-                <span class="pill-dark-teal">Consulta Confidencial</span>
-                <span class="pill-dark-teal">Sincronización en Vivo</span>
-                <span class="pill-dark-teal">Registro de Jornadas</span>
-            </div>
         </div>
         """, unsafe_allow_html=True)
         return
@@ -195,7 +185,7 @@ def render_student_view():
         return
         
     # Pestañas limpias sin emojis excesivos
-    tab_graficos, tab_tabla = st.tabs(["Gráficos y Balance Mensual", "Historial Completo de Marcaciones"])
+    tab_graficos, tab_tabla = st.tabs(["Gráficos de Asistencia", "Historial Completo de Marcaciones"])
     
     with tab_graficos:
         c_chart1, c_chart2 = st.columns(2)
